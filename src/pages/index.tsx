@@ -1,118 +1,85 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
+import GradientHeading, {GradientHeadingSmall, GradientHeadingCold} from "@/components/Widgets/GradientHeading";
+import BorderButton, { Partition } from "@/components/Widgets/atoms/StandardBorderButton";
+import InputBox from "@/components/Widgets/Input";
+import { SiGooglegemini } from "react-icons/si";
+import { ImLibrary } from "react-icons/im"
+import Light, { AnimatedLight } from "@/components/Widgets/Light";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { GiPaintRoller } from "react-icons/gi";
+import AlphaCard from "@/components/Widgets/molecules/AlphaCard";
 
-const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/pages/index.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+	const [retargetedEmail, setRetargedEmail] = useState("")
+	const navigator = useRouter()
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+	return (
+		<div className="w-full h-full flex flex-col bg-black">
+			<div id="section-main" className={`bg-image-net bg-cover bg-center bg-opacity-50 mb-10 p-5`}>
+				<div className="flex flex-row flex-grow">
+					<AnimatedLight color="#FF7043" blurRadius={300} className="w-[200px] h-[200px] absolute"/>
+					<AnimatedLight color="#E65100" blurRadius={300} className="w-[200px] h-[200px] self-end"/>
+				</div>
+				<GradientHeading>Welcome to WordsWorth</GradientHeading>
+				<GradientHeadingSmall>Your AI-Powered Reading Assistant</GradientHeadingSmall>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+				<div className="text-white mt-20 flex flex-col">
+					<div className="flex flex-row items-center justify-center w-11/12">
+						<InputBox
+							tag="Let's Read!" 
+							placeHolder="Enter Email" 
+							value={retargetedEmail} 
+							onChange={(e) => setRetargedEmail(e.target.value)}
+							isRetargeter={true}
+							tagLinkURL={"/account/create?usemail="+retargetedEmail}
+						/>
+        				<Partition/>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+						<BorderButton>Get Started</BorderButton>
+					</div>
+				</div>
+			</div>
+			
+			<div id="section-powered" className="text-white flex flex-row items-center justify-center mt-10 rounded-t-full mb-[100px]" style={{background: "rgb(7,7,7)"}}>
+				<div className="flex flex-col mt-10 w-1/3">
+					<Light color="#E65100" blurRadius={200} className="w-[200px] h-[100px] ml-96"/>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
+					<AlphaCard icon={<SiGooglegemini className="text-white text-2xl"/>} headingText="Powered By Gemini" iconBg="#F44336">
+						<Light color="#ff66cc" blurRadius={150} className="w-[200px] h-[100px] mr-96 absolute"/>
+						<p className="text-gray-200">
+							orem ipsum dolor sit amet consectetur adipisicing elit. Eos vitae maiores
+							doloremque ad tempora! Debitis nam quas, aliquid molestias ratione tempora 
+							aut facilis excepturi beatae in autem officiis reiciendis ducimus?
+							Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos vitae maiores
+							aut facilis excepturi beatae in autem officiis reiciendis ducimus?
+						</p>
+					</AlphaCard>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+					<AlphaCard icon={<ImLibrary className="text-white text-2xl"/>} headingText="Your Personal Library" iconBg="#4CAF50">
+						<Light color="#cc0099" blurRadius={140} className="w-[200px] h-[100px] ml-96 absolute"/>
+						<p className="text-gray-200">
+							Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos vitae maiores
+							doloremque ad tempora! Debitis nam quas, aliquid molestias ratione tempora 
+							aut facilis excepturi beatae in autem officiis reiciendis ducimus?
+							Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos vitae maiores
+						</p>
+					</AlphaCard>
+
+					<AlphaCard icon={<GiPaintRoller className="text-white text-2xl"/>} headingText="Customisability" iconBg="#E91E63">
+						<Light color="#ff00ff" blurRadius={200} className="w-[200px] h-[100px] absolute ml-24"/>
+						<p className="text-gray-200">
+							Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos vitae maiores
+							doloremque ad tempora! Debitis nam quas, aliquid molestias ratione tempora 
+							aut facilis excepturi beatae in autem officiis reiciendis ducimus?
+						</p>
+					</AlphaCard>
+          		</div>
+			</div>
+		  <div id="section-info" className="text-white flex flex-row items-center justify-center mt-10">
+			Hia
+			
+		  </div>
+		</div>
+	);
 }

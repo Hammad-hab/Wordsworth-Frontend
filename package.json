@@ -1,26 +1,48 @@
 {
-  "name": "novel-t",
+  "name": "wordsworth",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prod": "vercel --prod"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.11.4",
+    "animate.css": "^4.1.1",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^16.4.5",
+    "firebase": "^10.12.1",
+    "formidable": "^3.5.1",
+    "framer-motion": "^11.2.6",
+    "js-cookie": "^3.0.5",
+    "megajs": "^1.2.2",
+    "next": "14.1.0",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.3"
+    "react-icons": "^5.2.1",
+    "react-loading": "^2.0.3",
+    "react-tag-autocomplete": "^7.2.0",
+    "react-tag-input-component": "^2.0.2",
+    "react-toastify": "^10.0.5",
+    "react-tooltip": "^5.26.4",
+    "uuid": "^9.0.1",
+    "vercel": "^34.2.3"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@types/crypto-js": "^4.2.2",
+    "@types/formidable": "^3.4.5",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
+    "autoprefixer": "^10.4.19",
     "eslint": "^8",
-    "eslint-config-next": "14.2.3"
+    "eslint-config-next": "14.2.3",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5"
   }
 }
