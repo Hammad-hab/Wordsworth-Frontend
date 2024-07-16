@@ -1,14 +1,13 @@
 import GradientHeading from "@/components/Widgets/GradientHeading";
-import { UserContext } from "@/components/global/userStandardContext";
+import { useUserInformation } from "@/components/global/userStandardContext";
 import withAccountPrevention from "@/components/h-components/withAccountPrevention"
-import { useContext } from "react";
 import DashboardSidebar from "@/components/Widgets/templates/Sidebar";
 
 const DashboardMain = (props: any) => {
-  const user = useContext(UserContext) 
+  const usrdata = useUserInformation()
   return (
       <DashboardSidebar>
-          <GradientHeading className="text-4xl mt-5 border-b-2 border-double border-gray-600 p-2 mb-2">Welcome to WordsWorth, {user?.UserInfo?.displayName}</GradientHeading>
+          <GradientHeading className="text-4xl mt-5 border-b-2 border-double border-gray-600 p-2 mb-2">Welcome to WordsWorth, {usrdata?.UserInfo?.displayName}</GradientHeading>
           <p className="text-lg font-bold">Let{"'"}s get started by:</p>
           <div className="w-1/2 p-2 m-2 flex flex-col items-center">
               <ul className="list-disc ml-10">

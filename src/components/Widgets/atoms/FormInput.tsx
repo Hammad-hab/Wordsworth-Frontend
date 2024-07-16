@@ -13,6 +13,7 @@ interface FormInputProps {
 	className?:string
 }
 
+
 const FormInput = (props: FormInputProps) => {
 	return (
 		<input 

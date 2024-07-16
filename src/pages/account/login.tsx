@@ -8,13 +8,11 @@ import {
   signIn,
 } from "@/components/global/firebase";
 import { ButtonBorder } from "@/components/Widgets/atoms/StandardBorderButton";
-import GradientHeading from "@/components/Widgets/GradientHeading";
-import { getUsrInformation } from "@/components/global/firestore";
+import { getUsrInformation, setUsrInformation } from "@/components/global/firestore";
 import {
   useCallback,
   useEffect,
   useState,
-  useContext,
   useReducer,
   MouseEvent
 } from "react";
@@ -23,7 +21,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import Light from "@/components/Widgets/Light";
 import { FcGoogle } from "react-icons/fc";
 import { useRouter } from "next/router";
-import { UserContext } from "@/components/global/userStandardContext";
+import { useUserInformation } from "@/components/global/userStandardContext";
 import LoadingScreen from "@/components/Widgets/molecules/LoadingScreen";
 import "animate.css";
 import {
@@ -33,7 +31,7 @@ import {
 import AccountForms from "@/components/Widgets/templates/AccountForms";
 import useSingleActionGuard from "@/components/hooks/useSingleActionGuard";
 import Link from "next/link";
-import { getCookie, setCookie } from "@/components/global/superglobals";
+import { genStdUsrTemplate, getCookie, setCookie } from "@/components/global/superglobals";
 
 interface LoginUIProps {}
 
@@ -43,15 +41,17 @@ const LoginUI = (props: LoginUIProps) => {
   const [credentials, dispatch] = useReducer(LoginReducer, initialState);
   const navigator = useRouter();
   const singleExecutionHandlerRef = useSingleActionGuard()
-  const { usemail, uspass } = navigator.query;
-  const userContext = useContext(UserContext);
+  const { usemail, uspass, returnTo } = navigator.query;
+  const usrdata = useUserInformation()
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, () => {
       if (auth.currentUser) {
-        if (userContext?.UserInfo?.userIsCustomised) {
-          navigator.replace("/");
-        } else {
+        if (usrdata?.UserInfo?.userIsCustomised && !returnTo?.includes("/dashboard/account/")) {
+          navigator.replace("/dashboard");
+        } else if (returnTo?.includes("/dashboard/account/")) {
+          navigator.replace("/dashboard/account");
+        } else if (!usrdata?.UserInfo?.userIsCustomised)  {
           navigator.replace("/dashboard/getstarted");
         }
       } else {
@@ -78,7 +78,7 @@ const LoginUI = (props: LoginUIProps) => {
           );
           setIsLoading(true);
           const userInformation = await getUsrInformation(creds.user.uid);
-          userContext?.setUserInfo(userInformation);
+          usrdata?.setUserInfo(userInformation);
         } catch (e) {
           const error: string = String(e);
           const errorKind: FirebaseAuthenticationErrors = classifyFirebaseAuthError(
@@ -88,7 +88,7 @@ const LoginUI = (props: LoginUIProps) => {
         }
       })();
     },
-    [credentials?.username, credentials?.password, userContext]
+    [credentials?.username, credentials?.password, usrdata]
   );
 
   return (
@@ -124,7 +124,14 @@ const LoginUI = (props: LoginUIProps) => {
           onClick={async () => {
             const auths = await initializeAuthProviderPopup();
             setIsLoading(true);
-            console.log(auths);
+            const userInformation = await getUsrInformation(auths.user.uid);
+            if (!userInformation) {
+                const userInformation = genStdUsrTemplate(auths.user, {})
+                await setUsrInformation(auths.user.uid, userInformation)
+                usrdata?.setUserInfo(userInformation)
+                return
+            } 
+            usrdata?.setUserInfo(userInformation);
           }}
         >
           Sign in with Google <FcGoogle className="inline text-2xl" />

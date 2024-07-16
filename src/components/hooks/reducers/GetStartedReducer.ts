@@ -1,4 +1,4 @@
-import {UserInformation} from '@/components/global/firestore'
+import {UserInformation} from '@/components/global/interfaces'
 
 interface UserInfoState {
     type: "gender" | "birthdate" | "hobbies" | "hobbies"| "preferences" | "additionalInformation",
@@ -13,7 +13,6 @@ interface UserInfoState {
 
 let initialState: UserInformation;
 const GetStartedReducer = (state : any, action: UserInfoState): UserInformation | undefined => {
-
 
     const arr = ["gender", "birthdate", "preferences", "hobbies", "additionalInformation"]
     for (const property of arr) {

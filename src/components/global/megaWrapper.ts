@@ -1,6 +1,5 @@
-import {BufferString, Storage} from "megajs"
+import {MutableFile, Storage} from "megajs"
 import dotenv from "dotenv"
-import { init } from "next/dist/compiled/webpack/webpack";
 dotenv.config()
 
 
@@ -15,21 +14,28 @@ const initaliseMegaApp = async () => {
     // Global storage isn't initalised
     globalStorage = await (new Storage({
         email: "hammadalibutt30@gmail.com", // These null checks are only for tsc, they serve no use in production
-        password:"_79aP2yNDjEPmfW",  // These null checks are only for tsc, they serve no use in production
-        userAgent: null
+        password:"ovinwejkarsfckjwedrasfjrdakfbcdkjgbabdkas",  // These null checks are only for tsc, they serve no use in production
+        userAgent: null,
     }).ready)
     return globalStorage
 }
 
-const uploadMegaApp = async (filename:string, buff:any) => {
+const uploadMegaApp = async (filename:any, buff:any) => {
+    /**@deprecated */
     if (!globalStorage)
         await initaliseMegaApp()
-    globalStorage?.upload(filename, buff)
+    return globalStorage?.upload(filename, buff,)
 }
 
+const getFilesAssociated = (userId: string): MutableFile[] => {
+    const folder = globalStorage?.root.children?.find(folder => folder.name === userId && folder.directory)
+    const files = folder?.children ?? []
+    return files
+}
 
 export {
     initaliseMegaApp,
     uploadMegaApp,
-    globalStorage
+    globalStorage,
+    getFilesAssociated
 }

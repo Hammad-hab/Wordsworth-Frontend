@@ -1,16 +1,6 @@
 import { getAuth, GoogleAuthProvider, signInWithPopup, UserCredential, signInWithEmailAndPassword, createUserWithEmailAndPassword} from "firebase/auth";
 import { initializeApp } from "firebase/app";
-
-const firebaseConfig = {
-    apiKey: "AIzaSyCbdjz-JelBwKewufk3y3CgjM-N1uIlfXs",
-    authDomain: "bigqserver.firebaseapp.com",
-    projectId: "bigqserver",
-    storageBucket: "bigqserver.appspot.com",
-    messagingSenderId: "665695844751",
-    appId: "1:665695844751:web:c0c4fd3d71837e7f1073fa",
-    measurementId: "G-Q6GXL6PXN3"
-};
-  
+import { firebaseConfig } from "./superglobals";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

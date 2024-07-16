@@ -1,5 +1,8 @@
 import { useEffect, useRef } from "react"
 
+/** 
+ * @description A simple hook that ensures that an event is NOT executed twice 
+*/
 const useSingleActionGuard = () => {
     const elementRef: any = useRef()
     useEffect(() => {

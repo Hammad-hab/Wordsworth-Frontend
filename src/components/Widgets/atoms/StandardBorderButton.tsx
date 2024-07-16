@@ -7,15 +7,24 @@ interface BorderButtonProps {
   disabled?: boolean;
   children?: any;
   className?: string;
-  retargetRef?:any
+  retargetRef?: any;
+  theme?: string;
 }
 
 const BorderButton = (props: BorderButtonProps) => {
   return (
     <button
       disabled={props.disabled}
-      className={`border-red-500 border-2 rounded white p-2 font-bold hover:bg-red-500 transition-all duration-300 ${
-        props.disabled ? "hover:bg-red-100" : ""
+      className={`${
+        props.theme === "b" ? "border-[#4795b4]" : "border-red-500"
+      } border-2 rounded white px-4 py-2 font-bold ${
+        props.theme === "b" ? "hover:bg-[#4795b4]" : "hover:bg-red-500"
+      } transition-all duration-300 ${
+        props.disabled
+          ? props.theme === "b"
+            ? "hover:bg-[#63b8d9]"
+            : "hover:bg-red-100"
+          : ""
       } ${props.className}`}
       onClick={!props.disabled ? props.onClick : undefined}
       onMouseOver={props.onMouseOver}
@@ -31,8 +40,18 @@ const ButtonBorder = (props: BorderButtonProps) => {
   return (
     <button
       disabled={props.disabled}
-      className={`bg-red-500 border-2 border-red-500 rounded white p-2 font-bold hover:bg-red-400 transition-all duration-300 ${
-        props.disabled ? "bg-red-100" : ""
+      className={`${
+        props.theme === "b" ? "bg-[#4795b4]" : "bg-red-500"
+      } border-2 ${
+        props.theme === "b" ? "border-[#4795b4]" : "border-red-500"
+      } rounded white font-bold ${
+        props.theme === "b" ? "hover:bg-[#62a5c0]" : "hover:bg-red-400"
+      } transition-all duration-300 px-4 py-2 ${
+        props.disabled
+          ? props.theme === "b"
+            ? "bg-[#63b8d9]"
+            : "bg-red-100"
+          : ""
       } ${props.className}`}
       onClick={!props.disabled ? props.onClick : undefined}
       onMouseOver={props.onMouseOver}
@@ -50,7 +69,7 @@ const ButtonBorderBlue = (props: BorderButtonProps) => {
   return (
     <button
       disabled={props.disabled}
-      className={`border-2 border-blue-500 rounded white p-2 font-bold hover:bg-blue-400 transition-all duration-300 ${
+      className={`border-2 border-blue-500 rounded white px-4 py-2 font-bold hover:bg-blue-400 transition-all duration-300 ${
         props.disabled
           ? "bg-blue-100 text-blue-400 hover:bg-blue-200 border-blue-100"
           : "bg-blue-500 "
@@ -71,6 +90,5 @@ const Partition = (props: PartitionProps) => {
     <div className="border-l-2 ml-5 mr-5 border-stone-800 p-5 h-full pl-0 pr-0"></div>
   );
 };
-
 
 export { ButtonBorder, Partition, ButtonBorderBlue };

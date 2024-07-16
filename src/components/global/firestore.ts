@@ -1,22 +1,7 @@
-import { DocumentData, addDoc, collection, doc, getDoc, getDocs, getFirestore, setDoc } from "firebase/firestore";
-import {app} from "./firebase"
-
-type Preferences = "adventure" | 'science-fiction' | "fiction" | "non-fiction" | "historic-fiction" | "fantasy" | "romance" | "young-adult" | "mystery" | "comedy"
-type Gender = "M" | "F" | "NA"
-interface UserInformation {
-    displayName?:string,
-    gender?: Gender,
-    birthdate?: Date,
-    preferences?: string[]
-    hobbies?: string[],
-    additionalInformation?: string,
-    customisedMarkdown?: string[]
-    profilePicture?: string,
-    isProUser:boolean
-    userIsCustomised:boolean,
-    userstorageid:string
-
-}
+import { DocumentData, addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc } from "firebase/firestore";
+import {app, auth} from "./firebase"
+import { User, onAuthStateChanged } from "firebase/auth";
+import { UserInformation } from "./interfaces";
 
 const db = getFirestore(app);
 const usrInformation = collection(db, "usr_information")
@@ -31,6 +16,16 @@ const setUsrInformation = async (usrId: string, information: UserInformation) =>
     return res
 }
 
+const updateUsrInformation = async (usrId: string, information: UserInformation | any) => {
+    const res = await updateDoc(doc(usrInformation, usrId), information)
+    return res
+}
+
+const deleteUsrInformation = async (usrId: string) => {
+    const res = await deleteDoc(doc(usrInformation, usrId))
+    return res
+}
+
 const readUsrsInformation = async (information: UserInformation) => {
     const res = await getDocs(usrInformation)
     return res
@@ -42,16 +37,24 @@ const getUsrInformation = async (usrId:string): Promise<UserInformation> => {
     return data
 }
 
+const asyncOnAuthStateChanged = () => {
+    return new Promise((res: (value: User | null) => void, rej) => {
+        try {
+            onAuthStateChanged(auth, (usr) =>{
+                res(usr)
+            })
+        } catch (e) {
+            rej(e)
+        }
+    })
+}
 
 export {
     addUsrInformation,
     setUsrInformation,
     readUsrsInformation,
     getUsrInformation,
-}
-
-export type {
-    UserInformation,
-    Preferences,
-    Gender
+    updateUsrInformation,
+    asyncOnAuthStateChanged,
+    deleteUsrInformation
 }

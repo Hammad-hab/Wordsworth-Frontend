@@ -1,0 +1,38 @@
+.net_rotating {
+  background: linear-gradient(
+      147deg,
+      rgba(194, 194, 194, 0) 0%,
+      rgba(0, 0, 0, 1) 76%
+    ),
+    linear-gradient(0deg, rgba(238, 130, 238, 0) 0%, rgba(0, 0, 0, 1) 95%),
+    url("/Images/static_grid_net.avif");
+  background-size: cover;
+  background-repeat: no-repeat;
+  animation-name: background-movement;
+  animation-duration: 15s;
+  animation-direction:alternate-reverse;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+  background-position-x: 0, 0;
+  background-position-y: 0, 0;
+  /* animation-timing-function: ease-in-out; */
+}
+
+@keyframes background-movement {
+  100% {
+    background-position-y: 100%;
+  }
+}
+
+.superglow_orb
+{
+  animation-name: superglow_orb;
+  animation-duration: 1s;
+  animation-direction:alternate-reverse;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+}
+@keyframes superglow_orb {
+  0% {filter: blur(100px); background-color: pink; width: 200px; height: 200px;}
+  100% {filter: blur(90px); background-color: rgb(248, 174, 186); width: 230px; height: 230px;}
+}

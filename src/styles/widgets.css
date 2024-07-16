@@ -1,0 +1,150 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+.typewriter {
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  border-right: .15em solid orange; /* The typwriter cursor */
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: .15em; /* Adjust as needed */
+  animation: 
+    typing 3.5s steps(40, end),
+    blink-caret .75s step-end infinite;
+}
+
+/* The typing effect */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: orange; }
+}
+header {
+  padding: 10px;
+  position: sticky;
+  -webkit-position: sticky;
+  color: white;
+  top: 0;
+  background: rgba(0, 0, 0, 0.575);
+  backdrop-filter: blur(10px);
+}
+
+.encode-sans-expanded-regular {
+  font-family: "Encode Sans Expanded", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.font-nunito {
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+.inconsolata {
+  font-family: "Inconsolata", monospace;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+.noto-sans {
+  font-family: "Noto Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+
+.bg-image-net {
+  background-image: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(0, 0, 0, 1) 100%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(0, 0, 0, 1) 99%
+    ),
+    url("/bg_main_image.jpeg");
+}
+
+.bg-image-account {
+  /* background-image: url('https://images.unsplash.com/photo-1589998059171-988d887df646?q=80&w=3276&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); */
+  background-image: url("https://images.unsplash.com/photo-1591951425328-48c1fe7179cd?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA==");
+}
+
+.fadeIn {
+  animation-name: FadeIn;
+  animation-delay: 100ms;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes FadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.bg_pdf {
+  background-image: url("/pdf.png");
+}
+
+.km {
+  box-shadow: 0 30px 40px rgba(0, 0, 0, 0.1);
+}
+
+.skel_animation {
+  animation: skeleton 1s linear infinite alternate;
+}
+
+@keyframes skeleton {
+  0% {
+    background-color: rgb(204, 204, 204);
+  }
+  100% {
+    background-color: rgb(62, 62, 62);
+  }
+}
+
+.dm-sans {
+  font-family: "DM Sans", sans-serif;
+}
+.zindexn50 {
+  z-index: -50 !important;
+}
+
+.card::before {
+  background: red !important;
+  padding: 5px !important;
+  width: 500px !important;
+  height: 500px !important;
+}
+
+.unov-white {
+  background-color: white !important;
+}
+.btn-shadow {
+  --btn-shadow: 0 5px 5px -2px rgb(91 33 182 / .1), 0 2px 4px -2px rgb(91 33 182 / .1);
+  --btn-shadow-active: 0 7px 7px -4px rgb(91 33 182 / .15), 0 2px 4px -2px rgb(91 33 182 / .15);
+  background-clip: padding-box;
+  outline: none !important;
+}
+.btn-xl {
+  border-radius: .625rem !important;
+  font-size: 15px !important;
+  height: 48px !important;
+  padding-left: 1.25rem !important;
+  padding-right: 1.25rem !important;
+}
+
+.text-glow {
+  text-shadow: 1px 0px 20px #4b7990;
+}

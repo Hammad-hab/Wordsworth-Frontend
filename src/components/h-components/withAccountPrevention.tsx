@@ -1,7 +1,7 @@
-import { UserContext } from "@/components/global/userStandardContext";
+import { useUserInformation } from "@/components/global/userStandardContext";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/router";
-import React, { useContext, useEffect } from "react"
+import React, { useEffect } from "react"
 import { auth } from "../global/firebase";
 
 
@@ -12,7 +12,7 @@ const withAccountPrevention = (WrappedComponent: any) => {
         any user (who is not logged in) from accessing that specific page.
     */
     const AccountPreventionWrapper = (props:any) => {
-        const UserInfoContext = useContext(UserContext)
+        const UserInfoContext = useUserInformation()
         const navigator = useRouter()
         useEffect(() => {
             if (UserInfoContext === null) {

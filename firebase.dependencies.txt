@@ -1,0 +1,3 @@
+/src/components/atoms/LowerEndFileSelector.tsx              |   Light
+/src/components/templates/Sidebar.tsx                       |   Medium
+/src/pages/account/*                                        |   Heavy

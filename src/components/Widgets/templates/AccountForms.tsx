@@ -34,7 +34,7 @@ const AccountForms = (props: AccountFormsProps) => {
 		</div>
 		<div className="flex-grow h-full bg-right flex flex-col items-center justify-center select-none">
 				<GradientHeading>WordsWorth</GradientHeading>
-				<GradientHeading className="text-xl">Best books for you</GradientHeading>
+				<GradientHeading className="text-xl">Words worth your time</GradientHeading>
 		</div>
 	</div>
   );
