@@ -7,7 +7,8 @@
 interface GradientHeadingProps 
 {
 	children: any, 
-	className?:string
+	className?:string,
+	id?: any
 }
 
 
@@ -16,7 +17,7 @@ const GradientHeadingBase = (props: GradientHeadingProps) => {
 	return (
 		<div 
 			className={`text-center m-5 -mb-1 mt-2 font-extrabold select-none text-transparent bg-gradient-to-r ${props.className} transition-all`} 
-			style={{"WebkitBackgroundClip": 'text'}}> 
+			style={{"WebkitBackgroundClip": 'text'}} id={props.id}> 
 				{props.children}
 			</div>
 	);
@@ -25,7 +26,7 @@ const GradientHeadingBase = (props: GradientHeadingProps) => {
 // 
 const GradientHeading = (props: GradientHeadingProps) => {
 	/* Extends <GradientHeading/> Providing a smaller heading with blue gradient */
-	return <GradientHeadingBase className={`to-[#003459] from-[#00A8E8]  ${!props.className ? "text-6xl" : ""} ${props.className}`}>{props.children}</GradientHeadingBase>
+	return <GradientHeadingBase className={`to-[#003459] from-[#00A8E8]  ${!props.className ? "text-6xl" : ""} ${props.className}`} id={props.id}>{props.children}</GradientHeadingBase>
 };
 
 

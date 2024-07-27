@@ -2,6 +2,8 @@ import Image from "next/image";
 import ReactLoading from "react-loading";
 import "animate.css";
 import { BadTag } from "./Tags";
+import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 interface ChatBoxProps {
   sender?: string;
@@ -9,6 +11,7 @@ interface ChatBoxProps {
   direction: "Left" | "Right";
   picture?: string | any;
   isLoading?: boolean;
+  history?:any
   className?: string;
 }
 
@@ -70,6 +73,9 @@ const Parseify = (props: {
 const ChatBox = (props: ChatBoxProps) => {
   return (
     <div className={`w-full flex flex-col mt-2 ${props.className}`}>
+      <p className="bg-red-500">
+          {(props.history)}
+        </p>
       <div
         className={`flex gap-2 ${
           props.direction === "Left"
@@ -99,17 +105,18 @@ const ChatBox = (props: ChatBoxProps) => {
         }`}
       >
         {!props.isLoading ? (
-          <p className={`text-md dm-sans text-black`}>
-            {typeof props.message === "string" ? (
-              props.message
-            ) : (
-              <Parseify contents={props.message} />
-            )}
-          </p>
+          <div className={`text-md dm-sans text-black`}>
+           <Markdown remarkPlugins={[remarkGfm]} components={{
+            a: (props) => {
+              return <a href={props.href} className="text-blue-500 hover:underline">{props.children}</a>
+            }
+           }}>{props.message}</Markdown>
+          </div>
         ) : (
           <ReactLoading type="bubbles" width={30} height={30} color="black" />
         )}
       </div>
+        
     </div>
   );
 };

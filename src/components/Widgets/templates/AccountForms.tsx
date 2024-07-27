@@ -8,18 +8,20 @@ interface AccountFormsProps {
   Error:string,
   Heading:string,
   children:any
+  className?: string,
+  classNameSidebar?:string
 }
 
 const AccountForms = (props: AccountFormsProps) => {
   return (
-  <div className="flex flex-row w-screen h-screen bg-image-account bg-contain bg-right">      
+  <div className={"flex flex-row w-screen h-screen bg-image-account " + props.className}>      
 		<LoadingScreen isLoading={props.isLoading}/>
 
-		<div className="lg:w-1/3 sm:w-full h-full backdrop-blur-lg p-10 left-0" style={{backgroundColor: "rgba(0,0,0, 0.75)"}}>
+		<div className={`h-screen backdrop-blur-lg left-0 p-10 account_sidebar ${props.classNameSidebar ? props.classNameSidebar : "account_sidebar_h"}`} style={{backgroundColor: "rgba(0,0,0, 0.75)"}}>
 			<Link href={"/"}>
 				<IoIosArrowRoundBack className="z-50 text-4xl text-white hover:translate-x-1 transition-transform cursor-pointer"/>
 			</Link>
-			<h1 className="text-3xl font-bold text-white text-center mt-20 mb-10 select-none">{props.Heading}</h1>
+			<h1 className="text-3xl font-bold text-white text-center mt-20 mb-5 select-none">{props.Heading}</h1>
 			{/* Acutal Form. i.e where the register fields are! */}
 			<div>
 				
@@ -27,13 +29,13 @@ const AccountForms = (props: AccountFormsProps) => {
 				<hr className="opacity-50 mt-5"/>
 				<div className="flex flex-col items-center justify-center">
 				
-				{props.children}
-
+					{props.children}
 				</div>
 			</div>
 		</div>
-		<div className="flex-grow h-full bg-right flex flex-col items-center justify-center select-none">
-				<GradientHeading>WordsWorth</GradientHeading>
+
+		<div className="flex-grow h-full bg-right flex flex-col items-center justify-center select-none accounts_text">
+				<GradientHeading id="wordsworth">WordsWorth</GradientHeading>
 				<GradientHeading className="text-xl">Words worth your time</GradientHeading>
 		</div>
 	</div>

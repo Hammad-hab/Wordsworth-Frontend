@@ -12,7 +12,10 @@ import {
   deleteUsrInformation,
   updateUsrInformation,
 } from "@/components/global/firestore";
-import { useUserAccountInformation, useUserInformation } from "@/components/global/userStandardContext";
+import {
+  useUserAccountInformation,
+  useUserInformation,
+} from "@/components/global/userStandardContext";
 import {
   deleteUser,
   onAuthStateChanged,
@@ -28,7 +31,7 @@ import { clearObjectLocalStorage } from "@/components/global/superglobal_utils";
 
 const AccountInformation = (props: any) => {
   const Usrdata = useUserInformation();
-  const UsrAccount = useUserAccountInformation()
+  const UsrAccount = useUserAccountInformation();
   const [nusername, setNUsername] = useState("");
   const [nemail, setNEmail] = useState("");
   const [showDeleteDialog, setDialogAppearence] = useState(false);
@@ -53,8 +56,7 @@ const AccountInformation = (props: any) => {
     return new Promise((res: (args: any) => void, rej) => {
       onAuthStateChanged(auth, (usr) => {
         try {
-          if (usr)
-            updateEmail(usr, nemail).then(() => res(usr));
+          if (usr) updateEmail(usr, nemail).then(() => res(usr));
         } catch (e) {
           rej(e);
         }
@@ -219,33 +221,48 @@ const AccountInformation = (props: any) => {
             Delete My Account
           </ButtonBorder>
         </fieldset>
-        <br/>
+        <br />
       </div>
-      <Modal title="Account Deletion" show={showDeleteDialog}>
-        <p className="encode-sans-expanded-regular">
-          Are you sure you want to delete your account?
+      <Modal
+        title="Account Deletion"
+        show={showDeleteDialog}
+        content={
+          "Due to security reasons, we require you to log in again if your session is older than an hour"
+        }
+      >
+        {/* <div className="flex flex-row mt-5 w-full gap-5"> */}
+        <p
+          className="hover:bg-gray-100 text-gray-400 hover:text-gray-500 cursor-pointer p-1 transition-all"
+          onClick={() => setDialogAppearence(false)}
+        >
+          Exit
         </p>
-        <div className="flex flex-row mt-5 w-full gap-5">
-          <BorderButton
-            onClick={() => {
-              toast.promise(handleUserDeletion, {
-                success: `Goodbye ${Usrdata?.UserInfo?.displayName}!`,
-                pending: `Packing your bags for you to leave...`,
-                error:
-                  "It seems that you have not logged in recently. Due to security reasons, we require you login again.",
-              });
-            }}
+        <p
+          className="hover:bg-red-600 text-white hover:text-white cursor-pointer rounded-b-md p-1 transition-all bg-red-500"
+          onClick={() => {
+            toast.promise(handleUserDeletion, {
+              success: `Goodbye ${Usrdata?.UserInfo?.displayName}!`,
+              pending: `Packing your bags for you to leave...`,
+              error:
+                "It seems that you have not logged in recently. Due to security reasons, we require you login again.",
+            });
+          }}
+        >
+          Yes continue
+        </p>
+        {/* <BorderButton
+            
           >
             Continue
           </BorderButton>
           <ButtonBorder
             onClick={() => {
-              setDialogAppearence(false);
+              
             }}
           >
             No Cancel!
-          </ButtonBorder>
-        </div>
+          </ButtonBorder> */}
+        {/* </div> */}
       </Modal>
     </DashboardSidebar>
   );

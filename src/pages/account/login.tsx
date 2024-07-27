@@ -92,7 +92,7 @@ const LoginUI = (props: LoginUIProps) => {
   );
 
   return (
-    <AccountForms isLoading={isLoading} Error={error} Heading="Login">
+    <AccountForms isLoading={isLoading} Error={error} Heading="Login" classNameSidebar="h-screen">
       <FormInput
         inputType="text"
         placeHolder="Email"

@@ -40,6 +40,9 @@ interface UserInformation {
     userIsCustomised: boolean,
     userstorageid: string
     storageUsed?: number,
+    XP?:number,
+    Level?: number,
+    AccessableChats?:[]
 }
 
 

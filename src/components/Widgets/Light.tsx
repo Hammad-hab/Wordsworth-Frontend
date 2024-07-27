@@ -11,7 +11,7 @@ interface LightProps
 
 const Light = (props: LightProps) => {
   return (
-    <div className={`${props.className} z-10`} style={{
+    <div className={`${props.className} z-10 overflow-hidden`} id="light" style={{
         backgroundColor: props.color,
         filter: `blur(${props.blurRadius}px)`,
     }}>

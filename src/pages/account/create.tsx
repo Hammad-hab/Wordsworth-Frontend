@@ -94,7 +94,7 @@ const CreateAccountUI = (props: CreateAccountUIProps) => {
 
             const userInformation: UserInformation = genStdUsrTemplate(
               creds.user,
-              { displayName: credentials.displayName.toString() }
+              { displayName: credentials.displayName.toString(), XP: 0, Level: 1, AccessableChats:[] }
             );
 
             setUsrInformation(creds.user.uid, userInformation);
@@ -180,7 +180,11 @@ const CreateAccountUI = (props: CreateAccountUIProps) => {
             setIsLoading(true);
             const userInformation: UserInformation = genStdUsrTemplate(
               auths.user,
-              {}
+              {
+                XP: 0,
+                Level: 1,
+                AccessableChats: []
+              }
             );
             const userId = auths.user.uid;
             setUsrInformation(userId, userInformation);
@@ -190,9 +194,9 @@ const CreateAccountUI = (props: CreateAccountUIProps) => {
           Create with Google <FcGoogle className="inline text-2xl" />
         </button>
       </div>
-      <small className="text-white text-left mt-5 w-full">
+      <small className="text-gray-300 text-left mt-5 w-full">
         Already have an account?{" "}
-        <Link href={"/account/login"} className="text-blue-600 hover:underline">
+        <Link href={"/account/login"} className="text-blue-700 hover:underline">
           Login to Wordworth
         </Link>
       </small>

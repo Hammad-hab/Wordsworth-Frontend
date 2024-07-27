@@ -11,16 +11,25 @@ import LoadingScreen from "@/components/Widgets/molecules/LoadingScreen";
 import "@/styles/globals.css";
 import "react-toastify/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { ChatProvider } from "@/components/global/useChatContext";
+
 import {
   createProfilePic,
   getObjectLocalStorage,
   isNotNULL,
   setObjectLocalStorage,
 } from "@/components/global/superglobal_utils";
+import {
+  useUserDidLevelUp,
+  LevelUp,
+} from "@/components/hooks/contexts/userDidLevelup";
+
 export default function App({ Component, pageProps }: AppProps) {
   const [UserInfo, setUserInfo] = useState<UserInformation>();
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [userIsOnline, setUserConnectionStatus] = useState(true);
+  const [didLevelUp, setDidLevelUp] = useState(false);
+  const [chats, setChats] = useState<any>([])
   const router = useRouter();
   useEffect(() => {
     setUserConnectionStatus(navigator.onLine);
@@ -80,15 +89,19 @@ export default function App({ Component, pageProps }: AppProps) {
   }, []);
   return (
     <Provider value={{ UserInfo: UserInfo, setUserInfo }}>
-      <ToastContainer />
-      <div
-        className={
-          !isTransitioning ? "OpacityAnimation" : "OpacityAnimationLeave"
-        }
-      >
-        <LoadingScreen isLoading={isTransitioning} />
-        {!isTransitioning ? <Component {...pageProps} /> : <></>}
-      </div>
+      <ChatProvider value={{chats: chats, setChats: setChats}}>
+        <LevelUp.Provider value={{ didLevelUp, setDidLevelUp }}>
+          <ToastContainer />
+          <div
+            className={
+              !isTransitioning ? "OpacityAnimation" : "OpacityAnimationLeave"
+            }
+          >
+            <LoadingScreen isLoading={isTransitioning} />
+            {!isTransitioning ? <Component {...pageProps} /> : <></>}
+          </div>
+        </LevelUp.Provider>
+      </ChatProvider>
     </Provider>
   );
 }

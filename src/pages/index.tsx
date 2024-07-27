@@ -104,7 +104,7 @@ export default function Home() {
           <Light
             color="#00ffff"
             blurRadius={150}
-            className="w-[200px] h-[100px] ml-96 mt-20"
+            className="w-[200px] fixed h-[100px] ml-96 mt-20"
           />
 
           <AlphaCard

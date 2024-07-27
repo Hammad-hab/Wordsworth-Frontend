@@ -2,9 +2,15 @@
 .sidebarShowButton {
   display: none !important;
 }
+.account_sidebar {
+  width: 33.3333%;
+}
 @media (max-width: 1473px) {
   .sidebar {
     width: 30% !important;
+  }
+  .bg-image-account  {
+    background-size: cover;
   }
 }
 
@@ -12,11 +18,35 @@
   .sidebar {
     width: 40% !important;
   }
+  .bg-image-account  {
+    background-size: cover;
+  }
+  .account_sidebar {
+    width: 50%;
+  }
+  .account_sidebar_h {
+    height: fit-content !important;
+  }
+  .accounts_text > #wordsworth {
+    font-size: 40px !important;
+  }
 }
 
 @media (max-width: 820px) {
   .sidebar {
     width: 50% !important;
+  }
+  .bg-image-account  {
+    background-size: cover;
+  }
+  .account_sidebar {
+    width: 60%;
+  }
+  .account_sidebar_h {
+    height: fit-content !important;
+  }
+  .accounts_text {
+    display: none !important;
   }
 }
 
@@ -24,10 +54,23 @@
   .sidebar {
     width: 60% !important;
     position: absolute;
+    background-color: rgb(0, 52, 89) !important;
+  }
+  .hide_slide {
+    --tw-translate-x: -100%;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+      rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+      scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+  .sidebar_light {
+    display: none;
   }
   .sidebarShowButton {
     display: flex !important;
     flex-direction: column;
+  }
+  .bg-image-account  {
+    background-size: cover;
   }
 }
 
@@ -39,6 +82,16 @@
     display: flex !important;
     flex-direction: column;
   }
+  .bg-image-account  {
+    background-size: cover;
+  }
+  .account_sidebar_h {
+    height: fit-content !important;
+  }
+  .account_sidebar {
+    width: 75%;
+    /* height: fit-content !important; */
+  }
 }
 
 /* Nuclear Option, Offcanvas */
@@ -46,6 +99,25 @@
   .sidebar {
     width: 75.33% !important;
     position: absolute;
+    background-color: rgb(0, 52, 89) !important;
+  }
+  .account_sidebar_h {
+    height: fit-content !important;
+  }
+  .account_sidebar {
+    width: 100% !important;
+  }
+  .hide_slide {
+    --tw-translate-x: -100%;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+      rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+      scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+  .bg-image-account  {
+    background-size: cover;
+  }
+  .sidebar_light {
+    display: none;
   }
   .sidebarShowButton {
     display: flex !important;
@@ -59,22 +131,22 @@
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 80px));
 }
 .section_divider_bottom {
-  clip-path: polygon(0 0,100% 50px,100% 100%,0 100%);
+  clip-path: polygon(0 0, 100% 50px, 100% 100%, 0 100%);
   margin-top: -40px;
 }
 .section_divider_top_invert {
-  clip-path: polygon(0 0,100% 0,100% calc(100% - 56px),0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 56px), 0 100%);
   padding-bottom: 50px;
   margin-bottom: 0px;
 }
 .section_divider_bottom_invert {
-  clip-path: polygon(0 56px,100% 0,100% 100%,0 100%);
+  clip-path: polygon(0 56px, 100% 0, 100% 100%, 0 100%);
   margin-top: -40px;
 }
 
 .section_divider_top_puzzle {
-    z-index: 0;
-padding-bottom: 100px;
+  z-index: 0;
+  padding-bottom: 100px;
   --top: linear-gradient(#000 0 0) top/100% calc(100% - 80px) no-repeat,
     radial-gradient(farthest-side, #000 98%, #0000) bottom/160px 160px no-repeat;
   -webkit-mask: var(--top);
