@@ -107,7 +107,7 @@ const MyLibraryPage = (props: any) => {
   return (
     <DashboardSidebar>
       <div className="h-full w-full flex flex-col">
-        <div className="h-fit w-full grid grid-cols-10 gap-1">
+        <div className="h-fit w-full grid grid-cols-3 lg:grid-cols-10 gap-1">
           {directories?.map((file, index) => {
             return (
               <GridFileItem
@@ -115,7 +115,7 @@ const MyLibraryPage = (props: any) => {
                 key={index}
                 onSelect={(fl) => setSeletedDirs([...selectedDirs, fl])}
                 onDblClick={(fl) => {
-                  navigator.replace(`/dashboard/readfile?file=${fl.name}`)
+                  navigator.replace(`/dashboard/readfile?file=${fl.name}&size=${fl.size}`)
                 }}
                 onUnSelect={(fl) =>
                   setSeletedDirs(

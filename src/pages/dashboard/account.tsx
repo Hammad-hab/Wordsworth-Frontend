@@ -173,7 +173,7 @@ const AccountInformation = (props: any) => {
 
           <small className="text-gray-400 ml-2 mb-3">Change User Name</small>
           <InputBox
-            tag="Change username"
+            tag="Change name"
             autoClickDisable={true}
             className="border border-r-0"
             containerClassName="mb-0"

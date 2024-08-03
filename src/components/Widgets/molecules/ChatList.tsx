@@ -10,10 +10,12 @@ import { IoMdTrash } from "react-icons/io";
 import Dropdown from "./Dropdown";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/router";
+import { clearObjectLocalStorage } from "@/components/global/superglobal_utils";
 
 interface ChatListProps {}
 interface ChatListItemProps {
-  chat: { name: string; id: string };
+  chat: { name: string; chat_id: string };
+  orginalId: string
 }
 
 const ChatListItem = (props: ChatListItemProps) => {
@@ -24,14 +26,14 @@ const ChatListItem = (props: ChatListItemProps) => {
   return (
     <>
       <Link
-        href={`/dashboard/suggestions?chat_id=${props.chat.id}`}
+        href={`/dashboard/suggestions?chat_id=${props.chat.chat_id}`}
         className="flex flex-row items-center w-full"
         onMouseOver={() => setShowDots(true)}
         onMouseLeave={() => setShowDots(false)}
       >
-        <li className="cursor-pointer ml-5 transition-all p-2 indent-2 hover:bg-[#01223958] rounded-md w-full">
-          {props.chat.name.length > 11
-            ? props.chat.name.slice(0, 10) + "..."
+        <li className={`cursor-pointer ml-5 transition-all p-2 indent-2 ${props.orginalId === props.chat.chat_id ? "bg-[#01223958]" : "hover:bg-[#01223958]"} rounded-md w-full`} title={props.chat.name}>
+          {props.chat.name.length > 18
+            ? props.chat.name.slice(0, 17) + "..."
             : props.chat.name}
         </li>
         {showDots ?   <IoMdTrash
@@ -49,13 +51,14 @@ const ChatListItem = (props: ChatListItemProps) => {
                   },
                   body: JSON.stringify({
                     usrstorageid: acc?.UserInfo?.userstorageid,
-                    chat_id: props.chat.id,
+                    chat_id: props.chat.chat_id,
                   }),
                 });
                 if (res.status !== 200) throw `err`;
                 chats?.setChats((prev) =>
-                  prev?.filter((value) => value.id != props.chat.id)
+                  prev?.filter((value) => value.id != props.chat.chat_id)
                 );
+                clearObjectLocalStorage()
                 router.replace("/dashboard")
               },
               {
@@ -76,6 +79,8 @@ const ChatListItem = (props: ChatListItemProps) => {
 const ChatList = (props: ChatListProps) => {
   const usrdata: any = useUserInformation();
   const chats = useChatContext();
+  const router = useRouter()
+  const {chat_id} = router.query
   const [hasDoneRequest, setHasDoneRequest] = useState(chats?.chats?.length! > 0 ? true : false);
   useEffect(() => {
     if (!usrdata?.UserInfo?.AccessableChats) return
@@ -85,28 +90,37 @@ const ChatList = (props: ChatListProps) => {
     };
     try {
       (async () => {
-        const CHATS: any[] = [];
-        for await (const chat of usrdata?.UserInfo?.AccessableChats) {
-          try {
-            const promise = (
-              await (
-                await fetch(`http://0.0.0.0:8000/get_chat_name?chat_id=${chat}`)
-              ).json()
-            )["results"];
+        // const CHATS: any[] = [];
+        const promsie = await (await fetch(`http://0.0.0.0:8000/get_chat_names`, {
+          method:"POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            chat_ids: usrdata?.UserInfo?.AccessableChats
+          }),
+        })).json()
+        // for await (const chat of usrdata?.UserInfo?.AccessableChats) {
+        //   try {
+        //     const promise = (
+        //       await (
+        //         await fetch(`http://0.0.0.0:8000/get_chat_name?chat_id=${chat}`)
+        //       ).json()
+        //     )["results"];
 
-            if (
-              promise &&
-              !chats?.chats?.includes({ name: promise.name, id: chat })
-            ) {
-              if (CHATS.includes({ name: promise.name, id: chat })) continue;
-              CHATS.push({ name: promise.name, id: chat });
-            }
-          } catch (e) {
-            toast.error(`Error while looking up chat@${chat}`);
-          }
-        }
+        //     if (
+        //       promise &&
+        //       !chats?.chats?.includes({ name: promise.name, id: chat })
+        //     ) {
+        //       if (CHATS.includes({ name: promise.name, id: chat })) continue;
+        //       CHATS.push({ name: promise.name, id: chat });
+        //     }
+        //   } catch (e) {
+        //     toast.error(`Error while looking up chat@${chat}`);
+        //   }
+        // }
         chats?.setChats((prev: any) => {
-          return CHATS;
+          return promsie["results"];
         });
         setHasDoneRequest(true);
       })();
@@ -125,7 +139,7 @@ const ChatList = (props: ChatListProps) => {
       
       {chats?.chats?.length && hasDoneRequest? (
           chats?.chats?.map((chat: any, k: any) => (
-            <ChatListItem key={k} chat={chat} />
+            <ChatListItem key={k} chat={chat} orginalId={chat_id} />
           ))
       ) : (
         <>

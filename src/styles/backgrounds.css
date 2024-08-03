@@ -36,3 +36,14 @@
   0% {filter: blur(100px); background-color: pink; width: 200px; height: 200px;}
   100% {filter: blur(90px); background-color: rgb(248, 174, 186); width: 230px; height: 230px;}
 }
+
+li > b:first-child {
+  display: block;
+  font-size: 18px;
+}
+
+
+/* li > p > b.md-li-bold {
+  display: inline !important;
+} */
+

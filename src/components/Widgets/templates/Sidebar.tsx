@@ -86,7 +86,7 @@ const DashboardSidebar = (props: DashboardSidebarProps) => {
               className="m-2 mb-0 text-2xl self-end cursor-pointer"
               onClick={() => setShowActions(!showActions)}
             />
-            <Dropdown show={showActions} onBlur={() => setShowActions(false)}>
+            <Dropdown show={showActions} onBlur={() => setShowActions(false)} >
               <li className="p-2 text-sm">
                 <b className="font-semibold block">
                   {usrdata?.UserInfo?.displayName}
@@ -135,7 +135,7 @@ const DashboardSidebar = (props: DashboardSidebarProps) => {
             </Dropdown>
           </div>
           <div className="w-[64px] h-[64px] rounded-full block m-auto mt-5 mb-10 z-50">
-            <div className="absolute w-[64px] h-[64px] z-10">
+            <div className="absolute w-[64px] h-[64px] z-10" id="LevelIndigator">
               <CircularProgressbar
                 value={usrdata?.UserInfo?.XP ?? 1}
                 text={`${usrdata?.UserInfo?.Level}`}
@@ -164,8 +164,14 @@ const DashboardSidebar = (props: DashboardSidebarProps) => {
           </Link> */}
 
           <div className="p-3">
+          <Link href={"/dashboard/mylibrary"}>
+            <div className="hover:bg-[#0122391c] transition-all cursor-pointer rounded-md mb-2" id="LibraryLink">
+              <IoLibrary className="inline-block text-2xl m-2 mb-2 mr-5" />
+              My Library
+            </div>
+          </Link>
             <Link href={"/dashboard/suggestions"}>
-              <p className="mb-2 cursor-pointer">
+              <p className="hover:bg-[#0122391c] transition-all cursor-pointer mb-2 rounded-md" id="YourChats">
                 <GiTalk className="inline-block text-2xl m-2 mb-2 mr-5" />
                 Your Chats{" "}
                 <FaPlusCircle className="inline-block text-xl m-2 mb-2 mr-5 h"/>
@@ -193,12 +199,7 @@ const DashboardSidebar = (props: DashboardSidebarProps) => {
             {/* </ul> */}
           </div>
 
-          {/* <Link href={"/dashboard/mylibrary"}>
-            <div className="hover:bg-[#01223958] p-3 hover:indent-2 transition-all cursor-pointer">
-              <IoLibrary className="inline-block text-2xl m-2 mb-2 mr-5" />
-              My Library
-            </div>
-          </Link> */}
+          
         </div>
 
         {/* <div className="flex flex-col-reverse mt-16"> */}

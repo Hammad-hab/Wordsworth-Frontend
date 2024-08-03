@@ -73,7 +73,7 @@ const LowerEndFileSelector = (props: LowerEndFileSelectorProps) => {
         })
       }}/>
       <FaReadme  className="text-2xl hover:text-green-500 mr-5 transition-all duration-300" onClick={() => {
-         route.replace(`/dashboard/readfile?file=${props.file.name}`)
+         route.replace(`/dashboard/readfile?file=${props.file.name}&size=${props.file.size}`)
       }}/>
     </div>
   </div>

@@ -17,7 +17,12 @@ const useRandomPrompts = () => {
         "What's a book with a unique setting that feels like a character itself?",
         "Recommend a book that's perfect for a rainy day.",
         "I need a book with a mystery that I can try to solve along with the characters.",
-        "What's a book that has an epic adventure and a journey worth taking?"
+        "What's a book that has an epic adventure and a journey worth taking?",
+        "Discuss the dark aspects of Paradise Lost and regained",
+        "What are the rebellion themes in Prometheus Unbound",
+        "What does the stanza \"His dark materials to create more worlds\" mean?",
+        "Explain Samuel Beckett's Waiting for Godot",
+        "I need a novel similar to Sophie's world"
     ], []);
 
 

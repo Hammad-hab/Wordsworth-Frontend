@@ -168,18 +168,24 @@ meter::-webkit-meter-bar {
 meter::-webkit-meter-optimum-value {
   background: #86E57F !important; /* Green */
   border-radius: 10px;
+  transition: all 1s;
 }
 
 meter::-webkit-meter-suboptimum-value {
   background: #F29325 !important; /* Yellow */
   border-radius: 10px;
+  transition: all 1s;
 }
 
 meter::-webkit-meter-even-less-good-value {
   background: #E53A40 !important; /* Red */
   border-radius: 10px !important;
+  transition: all 1s;
 }
 
 canvas {
   z-index: -2 !important;
+}
+button {
+ outline: none;
 }

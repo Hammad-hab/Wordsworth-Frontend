@@ -92,6 +92,9 @@
     width: 75%;
     /* height: fit-content !important; */
   }
+  .fadedScroll {
+    padding: 0 !important;
+  }
 }
 
 /* Nuclear Option, Offcanvas */
@@ -122,6 +125,9 @@
   .sidebarShowButton {
     display: flex !important;
     flex-direction: column;
+  }
+  .fadedScroll {
+    padding: 0 !important;
   }
 }
 

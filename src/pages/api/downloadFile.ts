@@ -10,6 +10,10 @@ type Data = {
 
 export const config = {
   maxDuration: 60,
+  api: {
+    responseLimit: false,
+  },
+  
 };
  
 
@@ -31,8 +35,7 @@ export default async function handler(
   const file = files.filter(file => file.name === name)
   const link = await file[0].link({})
   const x = File.fromURL(link)
-  const buffer = await x.downloadBuffer({ forceHttps: false })
+  const buffer: Readable = x.download({ forceHttps: false })
   res.setHeader("Content-Type", "application/pdf")
-  const stream = Readable.from(buffer);
-  stream.pipe(res)
+  buffer.pipe(res)
 }

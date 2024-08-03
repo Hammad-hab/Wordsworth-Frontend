@@ -2,8 +2,10 @@ import Image from "next/image";
 import ReactLoading from "react-loading";
 import "animate.css";
 import { BadTag } from "./Tags";
-import Markdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { useEffect, useRef, useState } from "react";
+import { MdReadMore } from "react-icons/md";
 
 interface ChatBoxProps {
   sender?: string;
@@ -11,71 +13,44 @@ interface ChatBoxProps {
   direction: "Left" | "Right";
   picture?: string | any;
   isLoading?: boolean;
-  history?:any
+  history?: any;
   className?: string;
+  onFollowUp?: (question:string) => void;
 }
 
-const ModifiedImage = (props: {
-  content: string;
-  name: string;
-  caption?: string;
-}) => {
-  if (props.name !== "author_name")
-    return (
-      <div className="flex flex-col m-2 w-full rounded-md items-center">
-        <Image
-          className="block skel_animation rounded-md"
-          src={props.content}
-          alt={props.name}
-          width={250}
-          height={250}
-        />
-        <div className="p-2">{props.name}</div>
-      </div>
-    );
-};
+interface SuggestedQuestionProps {
+  q:string,
+  onClick: () => any
+}
+const SuggestedQuestion = (props: SuggestedQuestionProps) => {
 
-const Parseify = (props: {
-  contents: { type: string; content: string; label?: string }[];
-}) => {
   return (
-    <>
-      {props.contents.map((x, key) => {
-        if (x.type === "Heading")
-          return (
-            <h1
-              key={key}
-              className="font-semibold text-2xl mb-5 border-b-2 w-fit border-double mt-2"
-            >
-              {x.content}
-            </h1>
-          );
-        if (x.type === "Paragraph" || x.type === "Text") {
-          return (
-            <span key={key} className="block">
-              {x.content}
-            </span>
-          );
-        }
-
-        if (x.type === "Inappropriate")
-          return (
-            <BadTag
-              key={key}
-              text={x.content}
-            />
-          );
-      })}
-    </>
+    <span className="block m-2 border-b p-2 hover:text-blue-900 transition-all cursor-pointer hover:indent-2" onClick={() => props.onClick()}>
+      {typeof props.q === "string" ? props.q : props.q["question"]}
+    </span>
   );
 };
 
+
+
 const ChatBox = (props: ChatBoxProps) => {
+  const [showRelated, setShowRelated] = useState(true) 
+  const wrappedClickedEvent = (question:string) => {
+    if (props.onFollowUp)
+       props.onFollowUp(typeof question == "string" ? question : question["question"])
+    setShowRelated(false)
+  }
+  const this_chat = useRef<null | HTMLDivElement>(null)
+
+  useEffect(() => {
+     if (props.isLoading === false) {
+      if (this_chat.current instanceof HTMLDivElement) {
+          this_chat.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
+      }
+    }
+  }, [props.isLoading, this_chat])
   return (
-    <div className={`w-full flex flex-col mt-2 ${props.className}`}>
-      <p className="bg-red-500">
-          {(props.history)}
-        </p>
+    <div className={`w-full flex flex-col mt-2 ${props.className}`} >
       <div
         className={`flex gap-2 ${
           props.direction === "Left"
@@ -94,9 +69,9 @@ const ChatBox = (props: ChatBoxProps) => {
         />
         <small className={`w-full noto-sans`}>{props.sender}</small>
       </div>
-      
+
       <div
-        className={`m-2 bg-[#eaeaea] p-2 rounded-lg w-fit ${
+        className={`m-2 bg-[#eaeaea] p-2 rounded-lg w-fit max-w-[800px] ${
           props.direction === "Left"
             ? "rounded-tl-none"
             : props.direction === "Right"
@@ -105,18 +80,49 @@ const ChatBox = (props: ChatBoxProps) => {
         }`}
       >
         {!props.isLoading ? (
-          <div className={`text-md dm-sans text-black`}>
-           <Markdown remarkPlugins={[remarkGfm]} components={{
-            a: (props) => {
-              return <a href={props.href} className="text-blue-500 hover:underline">{props.children}</a>
-            }
-           }}>{props.message}</Markdown>
+          <div className={`text-md dm-sans text-black`} ref={this_chat}>
+            <Markdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                a: (props) => {
+                  return (
+                    <a
+                      href={props.href}
+                      target="_blank"
+                      className="text-blue-500 hover:underline"
+                    >
+                      {props.children}
+                    </a>
+                  );
+                },
+                p: (props) => {
+                  return <p className="m-2 mb-3">{props.children}</p>
+                },
+                li: (props) => {
+                  return <li className="list-disc m-6">{props.children}</li>
+                },
+                strong: (props) => {
+                  return <b className="font-extrabold md-li-bold">{props.children}</b>
+                }
+              }}
+            >
+              {props.message}
+            </Markdown>
           </div>
         ) : (
           <ReactLoading type="bubbles" width={30} height={30} color="black" />
         )}
       </div>
-        
+      {props.history && showRelated ? (
+        <p className="mt-5 ml-2">
+          <h1 className="font-semibold text-2xl"><MdReadMore className="inline-block"/> Related Questions</h1>
+          {props.history.map((question: any, key: number) => (
+            <SuggestedQuestion q={question} onClick={() => wrappedClickedEvent(question)} key={key}/>
+          ))}
+        </p>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

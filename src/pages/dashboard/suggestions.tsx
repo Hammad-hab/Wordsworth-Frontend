@@ -15,6 +15,7 @@ import Light from "@/components/Widgets/Light";
 import { IoMdSend } from "react-icons/io";
 import { useUserDidLevelUp } from "@/components/hooks/contexts/userDidLevelup";
 import { useRouter } from "next/router";
+import { jsonrepair } from 'jsonrepair'
 import {
   getUsrInformation,
   updateUsrInformation,
@@ -23,6 +24,7 @@ import { clearObjectLocalStorage, setObjectLocalStorage } from "@/components/glo
 import Overlay from "@/components/Widgets/atoms/Overlay";
 import { toast } from "react-toastify";
 import { useChatContext } from "@/components/global/useChatContext";
+import { arrayUnion } from "firebase/firestore";
 
 interface SuggestionChatProps {}
 const Input = (props: {
@@ -99,6 +101,11 @@ const SuggestionChat = (props: SuggestionChatProps) => {
   const { chat_id } = useRouter().query;
   const user_chatting_id = useRef(chat_id)
   const router = useRouter();
+
+  useEffect(() => {
+    if (!chat_id) return
+    user_chatting_id.current = chat_id
+  }, [chat_id])
 
   useEffect(() => {
     if (!chat_id) return;
@@ -199,13 +206,18 @@ const SuggestionChat = (props: SuggestionChatProps) => {
       if (!UserAccount?.uid) return;
 
       
-      setResponses((prevResponses) => [
-        ...prevResponses,
-        { role: "User", message: prompt },
-        { role: "Wordsworth", message: "", wait: true },
-      ]);
+      setResponses((prevResponses) => {
+       const newResponses = [...prevResponses]
+       if (newResponses.length > 0)
+          newResponses[newResponses.length - 1].history = 0
+       return [
+          ...newResponses,
+          { role: "User", message: prompt },
+          { role: "Wordsworth", message: "", wait: true },
+        ]
+      });
 
-      if (!user_chatting_id.current)
+      if (!user_chatting_id.current && !chat_id)
       {
         const create_req = await fetch("http://0.0.0.0:8000/create_chat", {
           method: "POST",
@@ -220,7 +232,7 @@ const SuggestionChat = (props: SuggestionChatProps) => {
         const chat_identifier = (await create_req.json())["chat_id"]
         user_chatting_id.current = chat_identifier
         updateUsrInformation(UserAccount.uid, {
-            "AccessableChats": [...(UsrData?.UserInfo?.AccessableChats ?? []), user_chatting_id.current]
+            "AccessableChats": arrayUnion(chat_identifier)
         })
         clearObjectLocalStorage()
         chats?.setChats(prev => prev ? [
@@ -243,6 +255,8 @@ const SuggestionChat = (props: SuggestionChatProps) => {
 
       const ai_response = (await ai_question.json())
       // console.log(ai_response)
+      const hist = ai_response["history"]
+      
       // setResponses(prev => {
       //   prev[prev.length - 1].message = ai_response
       //   prev[prev.length - 1].wait = false
@@ -254,7 +268,7 @@ const SuggestionChat = (props: SuggestionChatProps) => {
         newResponses[newResponses.length - 1] = {
           ...newResponses[newResponses.length - 1],
           message: ai_response["response"],
-          history: ai_response["history"],
+          history: JSON.parse(jsonrepair(hist)),
           wait: false,
         };
         return newResponses;
@@ -294,6 +308,7 @@ const SuggestionChat = (props: SuggestionChatProps) => {
                 }
                 direction={msg.role === "User" ? "Right" : "Left"}
                 isLoading={msg.wait}
+                onFollowUp={(question) => handleRequest(question)}
               />
             ))
           ) : (
@@ -340,7 +355,7 @@ const SuggestionChat = (props: SuggestionChatProps) => {
   else
     return (
       <DashboardSidebar>
-        <ReactLoading type="cylon" color="black" />
+        <ReactLoading type="bubbles" color="black" />
         <p>Loading your previous conversation...</p>
       </DashboardSidebar>
     );
