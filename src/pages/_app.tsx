@@ -94,7 +94,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <ToastContainer />
           <div
             className={
-              !isTransitioning ? "OpacityAnimation" : "OpacityAnimationLeave"
+              !isTransitioning ? " " : ""
             }
           >
             <LoadingScreen isLoading={isTransitioning} />

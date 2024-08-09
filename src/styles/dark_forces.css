@@ -1,0 +1,7 @@
+/* Super powerful css classes that cannot be undone by any force in css */
+.text-white-force {
+    color: white !important;
+} 
+.bg-transparent-force {
+    background: transparent !important;
+}

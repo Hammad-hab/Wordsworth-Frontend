@@ -31,6 +31,16 @@ import "react-circular-progressbar/dist/styles.css";
 import "animate.css";
 import ChatList from "../molecules/ChatList";
 import { FaPlusCircle } from "react-icons/fa";
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarTrigger,
+} from "@/components/ui/menubar";
+
 interface DashboardSidebarProps {
   children?: any;
   className?: string;
@@ -82,11 +92,7 @@ const DashboardSidebar = (props: DashboardSidebarProps) => {
       >
         <div className="h-full text-sm flex flex-col">
           <div className="self-end">
-            <IoOptionsOutline
-              className="m-2 mb-0 text-2xl self-end cursor-pointer"
-              onClick={() => setShowActions(!showActions)}
-            />
-            <Dropdown show={showActions} onBlur={() => setShowActions(false)} >
+            {/* <Dropdown show={showActions} onBlur={() => setShowActions(false)} >
               <li className="p-2 text-sm">
                 <b className="font-semibold block">
                   {usrdata?.UserInfo?.displayName}
@@ -132,27 +138,87 @@ const DashboardSidebar = (props: DashboardSidebarProps) => {
               >
                 <CiLogout className="inline" /> Logout
               </li>
-            </Dropdown>
+            </Dropdown> */}
+            <Menubar className="bg-transparent border-none">
+              <MenubarMenu>
+                <MenubarTrigger className="text-white-force bg-transparent bg-transparent-force">
+                  <IoOptionsOutline
+                    className="m-2 mb-0 text-2xl self-end cursor-pointer"
+                    onClick={() => setShowActions(!showActions)}
+                  />
+                </MenubarTrigger>
+                <MenubarContent>
+                  <MenubarItem>
+                    <MenubarShortcut>{usraccount?.email}</MenubarShortcut>
+                  </MenubarItem>
+
+                  <Link href={"/dashboard/account"}>
+                    <MenubarItem>
+                      <MdManageAccounts className="inline-block text-2xl m-2 mb-2 mr-2" />
+                      Account
+                    </MenubarItem>
+                  </Link>
+                  <Link href={"/dashboard/mylibrary"}>
+                    <MenubarItem>
+                      <IoLibrary className="inline-block text-2xl m-2 mb-2 mr-2" />
+                      My Library
+                    </MenubarItem>
+                  </Link>
+                  <MenubarSeparator />
+                  <MenubarItem
+                    onClick={() => {
+                      try {
+                        signOut(auth).then(() => {
+                          clearObjectLocalStorage();
+                          router.replace("/account/login");
+                        });
+                      } catch (e) {
+                        console.log("ERR_IGNRED");
+                      }
+                    }}
+                    ref={singleExecutionGuard}
+                  >
+                    <CiLogout className="inline" />
+                    <span className="ml-2">Logout</span>
+                  </MenubarItem>
+                  <MenubarSeparator />
+                  <MenubarItem>
+                    <meter
+                      value={btmb(storage, 3, true, true)}
+                      max={50}
+                      className="ml-2 mr-2 w-1/2 inline outline-none"
+                    />
+                    <small>{btmb(storage, 3)}</small>
+                  </MenubarItem>
+                </MenubarContent>
+              </MenubarMenu>
+            </Menubar>
           </div>
           <div className="w-[64px] h-[64px] rounded-full block m-auto mt-5 mb-10 z-50">
-            <div className="absolute w-[64px] h-[64px] z-10" id="LevelIndigator">
+            <div
+              className="absolute w-[64px] h-[64px] z-10"
+              id="LevelIndigator"
+            >
               <CircularProgressbar
                 value={usrdata?.UserInfo?.XP ?? 1}
-                text={`${usrdata?.UserInfo?.Level}`}
+                text={``}
                 styles={buildStyles({
                   pathColor: `#FFA000`,
                   textColor: "#FFA000",
                 })}
               />
             </div>
-            {usrdata?.UserInfo?.profilePicture  ? <Image
-              src={usrdata?.UserInfo?.profilePicture}
-              alt="Profile Picture"
-              width={64}
-              height={64}
-              className="rounded-full skel_animation"
-            /> : <div className="w-[64px] h-[64px] rounded-full skel_animation"></div>}
-            
+            {usrdata?.UserInfo?.profilePicture ? (
+              <Image
+                src={usrdata?.UserInfo?.profilePicture}
+                alt="Profile Picture"
+                width={64}
+                height={64}
+                className="rounded-full skel_animation"
+              />
+            ) : (
+              <div className="w-[64px] h-[64px] rounded-full skel_animation"></div>
+            )}
           </div>
 
           {/* </Link> */}
@@ -164,24 +230,29 @@ const DashboardSidebar = (props: DashboardSidebarProps) => {
           </Link> */}
 
           <div className="p-3">
-          <Link href={"/dashboard/mylibrary"}>
-            <div className="hover:bg-[#0122391c] transition-all cursor-pointer rounded-md mb-2" id="LibraryLink">
-              <IoLibrary className="inline-block text-2xl m-2 mb-2 mr-5" />
-              My Library
-            </div>
-          </Link>
+            <Link href={"/dashboard/mylibrary"}>
+              <div
+                className="hover:bg-[#0122391c] transition-all cursor-pointer rounded-md mb-2"
+                id="LibraryLink"
+              >
+                <IoLibrary className="inline-block text-2xl m-2 mb-2 mr-5" />
+                My Library
+              </div>
+            </Link>
             <Link href={"/dashboard/suggestions"}>
-              <p className="hover:bg-[#0122391c] transition-all cursor-pointer mb-2 rounded-md" id="YourChats">
+              <p
+                className="hover:bg-[#0122391c] transition-all cursor-pointer mb-2 rounded-md"
+                id="YourChats"
+              >
                 <GiTalk className="inline-block text-2xl m-2 mb-2 mr-5" />
                 Your Chats{" "}
-                <FaPlusCircle className="inline-block text-xl m-2 mb-2 mr-5 h"/>
+                <FaPlusCircle className="inline-block text-xl m-2 mb-2 mr-5 h" />
               </p>
             </Link>
-            <ChatList/>
+            <ChatList />
             {/* <ul> */}
-              
 
-              {/*             
+            {/*             
               <Link href={"/dashboard/suggestions"}>
                 <li className="cursor-pointer ml-2 hover:indent-2 transition-all p-3 hover:bg-[#01223958] border-l-2 border-[#0c2638d3] hover:border-l-8">
                   <BsFillChatSquareQuoteFill className="inline-block m-2" />
@@ -198,8 +269,6 @@ const DashboardSidebar = (props: DashboardSidebarProps) => {
               </li> */}
             {/* </ul> */}
           </div>
-
-          
         </div>
 
         {/* <div className="flex flex-col-reverse mt-16"> */}

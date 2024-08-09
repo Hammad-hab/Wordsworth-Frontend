@@ -6,7 +6,7 @@ import { User } from "firebase/auth";
 
 
 interface ChatContextType {
-    chats: {name:string, id:string}[] | undefined;
+    chats: {name:string, id:string, isCustom?:boolean}[] | undefined;
     setChats: Dispatch<SetStateAction<{name:string, id:string}[]  | undefined>>;
 }
 

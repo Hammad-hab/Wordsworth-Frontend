@@ -13,6 +13,18 @@ import { highlightPlugin, Trigger } from "@react-pdf-viewer/highlight";
 // Import styles
 import "@react-pdf-viewer/highlight/lib/styles/index.css";
 import "@react-pdf-viewer/core/lib/styles/index.css";
+import { Position, Tooltip } from "@react-pdf-viewer/core";
+import { SiCodemagic } from "react-icons/si";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 
 const renderHighlightTarget = (props: any) => {
   return (
@@ -27,7 +39,25 @@ const renderHighlightTarget = (props: any) => {
         zIndex: "100",
       }}
     >
+      <Drawer>
+        <DrawerTrigger className="p-2 bg-blue-500 rounded-md hover:bg-blue-600 shadow-lg text-white">
+          <SiCodemagic className="inline-block" />
+          Ask AI
+        </DrawerTrigger>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Book?</DrawerTitle>
+            <DrawerDescription>This action cannot be undone.</DrawerDescription>
+          </DrawerHeader>
 
+          <DrawerFooter>
+            <button>Submit</button>
+            <DrawerClose>
+              <button>Cancel</button>
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
     </div>
   );
 };

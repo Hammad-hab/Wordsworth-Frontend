@@ -117,7 +117,7 @@ const SuggestionChat = (props: SuggestionChatProps) => {
 
     (async () => {
       try {
-        const req = await fetch("http://0.0.0.0:8000/load_chat", {
+        const req = await fetch("https://words-worth-backend.vercel.app/load_chat", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -157,7 +157,7 @@ const SuggestionChat = (props: SuggestionChatProps) => {
   //
   //         let alt_id = ""
   //         if (!chat_id) {
-  //           const req = await fetch("http://0.0.0.0:8000/create_chat", {
+  //           const req = await fetch("https://words-worth-backend.vercel.app/create_chat", {
   //             method: "POST",
   //             headers: {
   //               "Content-Type": "application/json",
@@ -177,7 +177,7 @@ const SuggestionChat = (props: SuggestionChatProps) => {
   //           })
   //         }
 
-  //         const req = await fetch("http://0.0.0.0:8000/query", {
+  //         const req = await fetch("https://words-worth-backend.vercel.app/query", {
   //             method: "POST",
   //             headers: {
   //               "Content-Type": "application/json",
@@ -219,7 +219,7 @@ const SuggestionChat = (props: SuggestionChatProps) => {
 
       if (!user_chatting_id.current && !chat_id)
       {
-        const create_req = await fetch("http://0.0.0.0:8000/create_chat", {
+        const create_req = await fetch("https://words-worth-backend.vercel.app/create_chat", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -237,11 +237,11 @@ const SuggestionChat = (props: SuggestionChatProps) => {
         clearObjectLocalStorage()
         chats?.setChats(prev => prev ? [
           ...prev,
-          {name: prompt, id: chat_identifier}
+          {name: prompt, id: chat_identifier, isCustom: true}
         ] : prev)
       }
 
-      const ai_question = await fetch("http://0.0.0.0:8000/query", {
+      const ai_question = await fetch("https://words-worth-backend.vercel.app/query", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

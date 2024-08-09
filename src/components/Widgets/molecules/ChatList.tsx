@@ -15,14 +15,16 @@ import { clearObjectLocalStorage } from "@/components/global/superglobal_utils";
 interface ChatListProps {}
 interface ChatListItemProps {
   chat: { name: string; chat_id: string };
-  orginalId: string
+  orginalId: any
 }
 
 const ChatListItem = (props: ChatListItemProps) => {
   const [showDots, setShowDots] = useState(false);
+  const [hasBeenDeleted, setDeletionState] = useState(false)
   const acc = useUserInformation();
   const chats = useChatContext();
   const router = useRouter()
+  console.log(props.chat)
   return (
     <>
       <Link
@@ -30,8 +32,9 @@ const ChatListItem = (props: ChatListItemProps) => {
         className="flex flex-row items-center w-full"
         onMouseOver={() => setShowDots(true)}
         onMouseLeave={() => setShowDots(false)}
+        hidden={hasBeenDeleted}
       >
-        <li className={`cursor-pointer ml-5 transition-all p-2 indent-2 ${props.orginalId === props.chat.chat_id ? "bg-[#01223958]" : "hover:bg-[#01223958]"} rounded-md w-full`} title={props.chat.name}>
+        <li className={`cursor-pointer ml-5 transition-all p-2 indent-2 ${props.orginalId === props.chat.chat_id ? "bg-[#01223958]" : "hover:bg-[#01223958]"} rounded-md w-full`} title={props.chat.name}  hidden={hasBeenDeleted}>
           {props.chat.name.length > 18
             ? props.chat.name.slice(0, 17) + "..."
             : props.chat.name}
@@ -44,7 +47,7 @@ const ChatListItem = (props: ChatListItemProps) => {
 
             toast.promise(
               async () => {
-                const res = await fetch("http://0.0.0.0:8000/delete_chat", {
+                const res = await fetch("https://words-worth-backend.vercel.app/delete_chat", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
@@ -56,11 +59,13 @@ const ChatListItem = (props: ChatListItemProps) => {
                 });
                 if (res.status !== 200) throw `err`;
                 chats?.setChats((prev) =>
-                  prev?.filter((value) => value.id != props.chat.chat_id)
+                  chats.chats?.filter((value) => value.id != props.chat.chat_id)
                 );
                 clearObjectLocalStorage()
-                router.replace("/dashboard")
-              },
+                setDeletionState(true)
+                if (router.query.chat_id == props.chat.chat_id)
+                    router.replace("/dashboard")
+               },
               {
                 error: "Failed to delete chat, please try again",
                 success: `Successfully deleted ${props.chat.name}`,
@@ -91,7 +96,7 @@ const ChatList = (props: ChatListProps) => {
     try {
       (async () => {
         // const CHATS: any[] = [];
-        const promsie = await (await fetch(`http://0.0.0.0:8000/get_chat_names`, {
+        const promsie = await (await fetch(`https://words-worth-backend.vercel.app/get_chat_names`, {
           method:"POST",
           headers: {
             "Content-Type": "application/json",
@@ -104,7 +109,7 @@ const ChatList = (props: ChatListProps) => {
         //   try {
         //     const promise = (
         //       await (
-        //         await fetch(`http://0.0.0.0:8000/get_chat_name?chat_id=${chat}`)
+        //         await fetch(`https://words-worth-backend.vercel.app/get_chat_name?chat_id=${chat}`)
         //       ).json()
         //     )["results"];
 
@@ -120,7 +125,8 @@ const ChatList = (props: ChatListProps) => {
         //   }
         // }
         chats?.setChats((prev: any) => {
-          return promsie["results"];
+          // return promsie["results"]
+          return [...(chats.chats?.filter(v => v.isCustom) ?? []), ...promsie["results"]];
         });
         setHasDoneRequest(true);
       })();
@@ -139,7 +145,7 @@ const ChatList = (props: ChatListProps) => {
       
       {chats?.chats?.length && hasDoneRequest? (
           chats?.chats?.map((chat: any, k: any) => (
-            <ChatListItem key={k} chat={chat} orginalId={chat_id} />
+            <ChatListItem key={k} chat={chat} orginalId={chat_id} /> 
           ))
       ) : (
         <>

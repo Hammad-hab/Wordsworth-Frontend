@@ -72,7 +72,7 @@ const MyLibraryPage = (props: any) => {
       toast.promise(handleUploadServerSide, {
         success: "Successfully uploaded your PDF File",
         pending:
-          "Please wait while we upload your file. You can tab out if you want.",
+          "Please wait while we upload your file. Do not tab out while uploading.",
         error: "It seems that we have run into a problem",
       });
     }
