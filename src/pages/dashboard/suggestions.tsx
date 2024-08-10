@@ -273,7 +273,7 @@ const SuggestionChat = (props: SuggestionChatProps) => {
           };
           return newResponses;
         });
-      } catch (e) {np
+      } catch (e) {
         setResponses((prevResponses) => {
           const newResponses = [...prevResponses];
           newResponses[newResponses.length - 1] = {
