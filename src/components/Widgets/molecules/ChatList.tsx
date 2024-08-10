@@ -11,6 +11,7 @@ import Dropdown from "./Dropdown";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/router";
 import { clearObjectLocalStorage } from "@/components/global/superglobal_utils";
+import { updateUsrInformation } from "@/components/global/firestore";
 
 interface ChatListProps {}
 interface ChatListItemProps {
@@ -22,6 +23,7 @@ const ChatListItem = (props: ChatListItemProps) => {
   const [showDots, setShowDots] = useState(false);
   const [hasBeenDeleted, setDeletionState] = useState(false)
   const acc = useUserInformation();
+  const acc_info = useUserAccountInformation();
   const chats = useChatContext();
   const router = useRouter()
   console.log(props.chat)
@@ -47,24 +49,32 @@ const ChatListItem = (props: ChatListItemProps) => {
 
             toast.promise(
               async () => {
-                const res = await fetch("https://words-worth-backend.vercel.app/delete_chat", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    usrstorageid: acc?.UserInfo?.userstorageid,
-                    chat_id: props.chat.chat_id,
-                  }),
-                });
-                if (res.status !== 200) throw `err`;
-                chats?.setChats((prev) =>
-                  chats.chats?.filter((value) => value.id != props.chat.chat_id)
-                );
-                clearObjectLocalStorage()
-                setDeletionState(true)
-                if (router.query.chat_id == props.chat.chat_id)
-                    router.replace("/dashboard")
+                try {
+                  const res = await fetch("https://words-worth-backend.vercel.app/delete_chat", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      usrstorageid: acc?.UserInfo?.userstorageid,
+                      chat_id: props.chat.chat_id,
+                    }),
+                  });
+                  // if (res.status !== 200) throw `err`;
+                  chats?.setChats((prev) =>
+                    prev?.filter((value) => value.id !== props.chat.chat_id && value.name !==  props.chat.name)
+                  );
+                  updateUsrInformation(acc_info?.uid!, {
+                    "AccessableChats": chats?.chats!.filter(value => value.id !== props.chat.chat_id)
+                  })
+                  clearObjectLocalStorage()
+                  setDeletionState(true)
+                  if (router.query.chat_id == props.chat.chat_id)
+                      router.replace("/dashboard")
+                } catch(e) {
+                  console.log(e)
+                  
+                }
                },
               {
                 error: "Failed to delete chat, please try again",
@@ -95,7 +105,6 @@ const ChatList = (props: ChatListProps) => {
     };
     try {
       (async () => {
-        // const CHATS: any[] = [];
         const promsie = await (await fetch(`https://words-worth-backend.vercel.app/get_chat_names`, {
           method:"POST",
           headers: {
@@ -105,28 +114,8 @@ const ChatList = (props: ChatListProps) => {
             chat_ids: usrdata?.UserInfo?.AccessableChats
           }),
         })).json()
-        // for await (const chat of usrdata?.UserInfo?.AccessableChats) {
-        //   try {
-        //     const promise = (
-        //       await (
-        //         await fetch(`https://words-worth-backend.vercel.app/get_chat_name?chat_id=${chat}`)
-        //       ).json()
-        //     )["results"];
-
-        //     if (
-        //       promise &&
-        //       !chats?.chats?.includes({ name: promise.name, id: chat })
-        //     ) {
-        //       if (CHATS.includes({ name: promise.name, id: chat })) continue;
-        //       CHATS.push({ name: promise.name, id: chat });
-        //     }
-        //   } catch (e) {
-        //     toast.error(`Error while looking up chat@${chat}`);
-        //   }
-        // }
         chats?.setChats((prev: any) => {
-          // return promsie["results"]
-          return [...(chats.chats?.filter(v => v.isCustom) ?? []), ...promsie["results"]];
+          return [...(chats.chats?.filter(v => v.isCustom) ?? []), ...(promsie["results"] ?? [])];
         });
         setHasDoneRequest(true);
       })();

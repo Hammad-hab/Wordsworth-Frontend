@@ -241,38 +241,52 @@ const SuggestionChat = (props: SuggestionChatProps) => {
         ] : prev)
       }
 
-      const ai_question = await fetch("https://words-worth-backend.vercel.app/query", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          usrstorageid: UsrData?.UserInfo?.userstorageid,
-          chat_id: user_chatting_id.current,
-          question: prompt
-        }),
-      });
+      try {
+        const ai_question = await fetch("https://words-worth-backend.vercel.app/query", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            usrstorageid: UsrData?.UserInfo?.userstorageid,
+            chat_id: user_chatting_id.current,
+            question: prompt
+          }),
+        });
+        const ai_response = (await ai_question.json())
+        // console.log(ai_response)
+        const hist = ai_response["history"]
+        
+        // setResponses(prev => {
+        //   prev[prev.length - 1].message = ai_response
+        //   prev[prev.length - 1].wait = false
+        //   return prev
+        // })
+  
+        setResponses((prevResponses) => {
+          const newResponses = [...prevResponses];
+          newResponses[newResponses.length - 1] = {
+            ...newResponses[newResponses.length - 1],
+            message: ai_response["response"],
+            history: JSON.parse(jsonrepair(hist)),
+            wait: false,
+          };
+          return newResponses;
+        });
+      } catch (e) {np
+        setResponses((prevResponses) => {
+          const newResponses = [...prevResponses];
+          newResponses[newResponses.length - 1] = {
+            ...newResponses[newResponses.length - 1],
+            message: "It seems that there is a problem with your internet connection, kindly reconnect and reload.",
+            history: ["I've fixed the error"],
+            wait: false,
+          };
+          return newResponses;
+        });
+      }
 
-      const ai_response = (await ai_question.json())
-      // console.log(ai_response)
-      const hist = ai_response["history"]
-      
-      // setResponses(prev => {
-      //   prev[prev.length - 1].message = ai_response
-      //   prev[prev.length - 1].wait = false
-      //   return prev
-      // })
 
-      setResponses((prevResponses) => {
-        const newResponses = [...prevResponses];
-        newResponses[newResponses.length - 1] = {
-          ...newResponses[newResponses.length - 1],
-          message: ai_response["response"],
-          history: JSON.parse(jsonrepair(hist)),
-          wait: false,
-        };
-        return newResponses;
-      });
       
       console.log(responses)
     })()
