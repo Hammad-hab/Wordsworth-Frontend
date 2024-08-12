@@ -28,6 +28,12 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import "react-circular-progressbar/dist/styles.css";
 import { clearObjectLocalStorage } from "@/components/global/superglobal_utils";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { CiCircleInfo } from "react-icons/ci";
 
 const AccountInformation = (props: any) => {
   const Usrdata = useUserInformation();
@@ -88,7 +94,7 @@ const AccountInformation = (props: any) => {
               userIsCustomised: false,
             }).then(() => {
               clearObjectLocalStorage();
-              navigator.replace("/dashboard/getstarted?force=true");
+              navigator.replace("/dashboard/getstarted?force=true&config=true");
               res(usr);
             });
         } catch (e) {
@@ -119,27 +125,48 @@ const AccountInformation = (props: any) => {
             <li>
               <b className="font-semibold select-none">Account Storage Key:</b>{" "}
               <span>{Usrdata?.UserInfo?.userstorageid}</span>{" "}
-              <BadTag text="Private Information: Keep Secure." />
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <span>
+                    <BadTag text="Private Information: Keep Secure." />
+                    <CiCircleInfo className="ml-5 text-2xl inline" />
+                  </span>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                  <b className="block underline">Account Keys</b>
+                  <small>
+                    This is an account key. An account key
+                    is a unique id associated with every
+                    wordsworth account that is used for 
+                    encrypting your data and validating 
+                    access
+                  </small>
+                </HoverCardContent>
+              </HoverCard>
             </li>
 
             <li>
               <b className="font-semibold select-none">Known Hobbies:</b>{" "}
               <ul className="list-disc ml-14">
-                {Usrdata?.UserInfo?.hobbies?.map((value, k) => (
-                  <li key={k}>
-                    <span>{value}</span>
-                  </li>
-                ))}
+                {Usrdata?.UserInfo?.hobbies
+                  ? Usrdata?.UserInfo?.hobbies.map((value, k) => (
+                      <li key={k}>
+                        <span>{value}</span>
+                      </li>
+                    ))
+                  : "N/A"}
               </ul>
             </li>
             <li>
               <b className="font-semibold select-none mt-5">Favorite Genres:</b>{" "}
               <ul className="list-disc ml-14">
-                {Usrdata?.UserInfo?.preferences?.map((value, k) => (
-                  <li key={k}>
-                    <span>{value}</span>
-                  </li>
-                ))}
+                {Usrdata?.UserInfo?.preferences
+                  ? Usrdata?.UserInfo?.preferences.map((value, k) => (
+                      <li key={k}>
+                        <span>{value}</span>
+                      </li>
+                    ))
+                  : "N/A"}
               </ul>
             </li>
             <li>
@@ -152,18 +179,33 @@ const AccountInformation = (props: any) => {
             </li>
           </ul>
 
-          <p
-            className="mt-5 text-gray-400 hover:text-red-500 transition-all w-fit cursor-pointer"
-            onClick={() => {
-              toast.promise(resetUserInformation, {
-                pending: "Please wait as we purge your old data...",
-                success: "Successfully Cleared existing data, redirecting...",
-                error: "Data reset failed, please try again later.",
-              });
-            }}
-          >
-            Reconfigure account information
-          </p>
+          <HoverCard>
+            <HoverCardTrigger asChild>
+              <p
+                className="mt-5 text-gray-400 hover:text-red-500 transition-all w-fit cursor-pointer"
+                onClick={() => {
+                  toast.promise(resetUserInformation, {
+                    pending: "Please wait as we purge your old data...",
+                    success:
+                      "Successfully Cleared existing data, redirecting...",
+                    error: "Data reset failed, please try again later.",
+                  });
+                }}
+              >
+                Configure account information
+                <CiCircleInfo className="ml-5 text-2xl inline" />
+              </p>
+            </HoverCardTrigger>
+            <HoverCardContent>
+              <b className="block underline">About Account Config</b>
+              <small>
+                Wordsworth performs better if it knows more about your
+                interests. If you configure your account, you will be asked
+                various questions that might be useful for getting the right
+                books for you.
+              </small>
+            </HoverCardContent>
+          </HoverCard>
         </fieldset>
 
         <fieldset className="border-2 border-zinc-300 p-3 mt-5 mr-5 ml-5">

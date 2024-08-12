@@ -41,6 +41,13 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar";
 
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { CiCircleInfo, CiViewList } from "react-icons/ci";
+
 interface DashboardSidebarProps {
   children?: any;
   className?: string;
@@ -186,9 +193,26 @@ const DashboardSidebar = (props: DashboardSidebarProps) => {
                     <meter
                       value={btmb(storage, 3, true, true)}
                       max={50}
-                      className="ml-2 mr-2 w-1/2 inline outline-none"
+                      className="mr-2 w-1/2 inline outline-none"
                     />
                     <small>{btmb(storage, 3)}</small>
+                    <HoverCard>
+                      <HoverCardTrigger asChild>
+                        <span>
+                          <CiCircleInfo className="ml-5 text-2xl inline" />
+                        </span>
+                      </HoverCardTrigger>
+                      <HoverCardContent>
+                        <b className="block underline">Storage</b>
+                        <small>
+                          Every user has a certain
+                          free cloud storage for 
+                          storing Books. Illegally
+                          obtained eBooks are 
+                          deleted
+                        </small>
+                      </HoverCardContent>
+                    </HoverCard>
                   </MenubarItem>
                 </MenubarContent>
               </MenubarMenu>
@@ -237,6 +261,16 @@ const DashboardSidebar = (props: DashboardSidebarProps) => {
               >
                 <IoLibrary className="inline-block text-2xl m-2 mb-2 mr-5" />
                 My Library
+              </div>
+            </Link>
+
+            <Link href={"/dashboard/readinglists"}>
+              <div
+                className="hover:bg-[#0122391c] transition-all cursor-pointer rounded-md mb-2"
+                id="LibraryLink"
+              >
+                <CiViewList className="inline-block text-2xl m-2 mb-2 mr-5" />
+                Your Reading List
               </div>
             </Link>
             <Link href={"/dashboard/suggestions"}>

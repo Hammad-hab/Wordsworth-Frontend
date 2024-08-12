@@ -99,6 +99,7 @@ const genStdUsrTemplate = (user: User, args: Partial<UserInformation> ) => {
     userIsCustomised: false,
     isProUser: false,
     userstorageid: v4(),
+    ReadingLists: [],
     ...args
   };
   return userInformation

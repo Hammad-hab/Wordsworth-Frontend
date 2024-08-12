@@ -17,8 +17,12 @@ const setUsrInformation = async (usrId: string, information: UserInformation) =>
 }
 
 const updateUsrInformation = async (usrId: string, information: UserInformation | any) => {
+    try {
     const res = await updateDoc(doc(usrInformation, usrId), information)
     return res
+    } catch (e) {
+        return null
+    }
 }
 
 const deleteUsrInformation = async (usrId: string) => {

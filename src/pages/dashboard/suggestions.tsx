@@ -28,14 +28,18 @@ import { arrayUnion } from "firebase/firestore";
 
 interface SuggestionChatProps {}
 const Input = (props: {
-  requestHandler: (prompt: string) => void;
+  requestHandler: (prompt: string, callback?:any) => void;
   disabled: boolean;
 }) => {
   const [userQuery, setUserQuery] = useState("");
+  const inputRef = useRef<any>(null)
   return (
     <div className="w-full flex flex-row border border-[#dddde0] rounded-md">
       {/* border border-[#dddde0] */}
       <textarea
+        ref={inputRef}
+        autoFocus
+        
         className={`w-full p-2 mt-1 pl-4 pr-4 outline-none rounded-md h-[45px] dm-sans resize-none ${
           props.disabled ? "cursor-not-allowed" : ""
         } placeholder:text-md`}
@@ -66,7 +70,7 @@ const Input = (props: {
           !userQuery ? "bg-cyan-600" : "bg-cyan-500 hover:bg-cyan-600"
         }`}
         onClick={() => {
-          props.requestHandler(userQuery);
+          props.requestHandler(userQuery, ()=> inputRef.current.focus());
           setUserQuery("");
         }}
       />
@@ -140,68 +144,19 @@ const SuggestionChat = (props: SuggestionChatProps) => {
         setIsLoadingPreloadConversation(false);
       } catch (e) {
         toast.error("Chat not found!");
+        
+        await updateUsrInformation(UserAccount?.uid!, {
+          "AccessableChats": chats?.chats!.filter(value => value.id !== chat_id).map(v => v.id)
+        })
+        chats?.setChats(chats?.chats!.filter(value => value.id !== chat_id))
+        clearObjectLocalStorage()
         router.replace("/dashboard");
       }
     })();
   }, [chat_id, UsrData?.UserInfo?.userstorageid]);
 
-  // const handleRequest = (prompt:string) => {
-  //   (async () => {
-  //         if (displayArea.current instanceof HTMLDivElement) {
-  //           displayArea.current.scrollTo({
-  //             top: window.innerHeight + displayArea.current.scrollHeight,
-  //             behavior: "smooth",
-  //           });
-  //         }
-  //         if (!UserAccount?.uid) return;
-  //
-  //         let alt_id = ""
-  //         if (!chat_id) {
-  //           const req = await fetch("https://words-worth-backend.vercel.app/create_chat", {
-  //             method: "POST",
-  //             headers: {
-  //               "Content-Type": "application/json",
-  //             },
-  //             body: JSON.stringify({
-  //               usrstorageid: UsrData?.UserInfo?.userstorageid,
-  //               chat_name: prompt,
-  //             }),
-  //           })
-  //           alt_id = (await req.json())["chat_id"]
-  //           if (req.status !== 200) {
-  //             toast.error("Error trying to create chat. Please reload and try again")
-  //             return
-  //           }
-  //           updateUsrInformation(UserAccount.uid, {
-  //             "AccessableChats": [alt_id]
-  //           })
-  //         }
-
-  //         const req = await fetch("https://words-worth-backend.vercel.app/query", {
-  //             method: "POST",
-  //             headers: {
-  //               "Content-Type": "application/json",
-  //             },
-  //             body: JSON.stringify({
-  //               usrstorageid: UsrData?.UserInfo?.userstorageid,
-  //               chat_id: chat_id ? chat_id : alt_id,
-  //               question: prompt
-  //             }),
-  //           })
-  //         const repsonse = (await req.json())["response"]
-  //         console.log(repsonse)
-  //         setResponses((prevResponses: any) => {
-  //           prevResponses[prevResponses.length - 1].wait = false
-  //           prevResponses[prevResponses.length - 1].message = repsonse
-  //           return prevResponses
-  //         });
-
-  //         setIsGenerating(false);
-  //         // // Push AI response to responses
-  //         // return responseJson;
-  //       })();
   // }
-  const handleRequest = (prompt: string) => {
+  const handleRequest = (prompt: string, callback?:any) => {
    (async () => {
       if (!UserAccount?.uid) return;
 
@@ -289,6 +244,7 @@ const SuggestionChat = (props: SuggestionChatProps) => {
 
       
       console.log(responses)
+      if (typeof callback == "function") callback()
     })()
   };
   // const handleRequest = (...props) => props;
@@ -350,7 +306,7 @@ const SuggestionChat = (props: SuggestionChatProps) => {
                     onClick={() => handleRequest(value)}
                   >
                     <div
-                      className={`bg-gray-400 p-5 rounded-sm shadow-md hover:opacity-80 transition-all card cursor-pointer`}
+                      className={`bg-gray-400 p-5 rounded-sm shadow-md hover:opacity-80 transition-all card cursor-pointer h-full`}
                     >
                       {/* <Light color=""/> */}
                       {value}

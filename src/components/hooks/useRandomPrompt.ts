@@ -3,26 +3,26 @@ import { getRandomBookPrompts } from "../global/superglobal_utils";
 
 const useRandomPrompts = () => {
     const prompts = useMemo(() => [
-        "I need a book that feels like a warm hug after a long day. Any suggestions?",
-        "Recommend a book that will make me laugh out loud in public places.",
-        "What's a book that has a plot twist I won't see coming?",
-        "I want to escape to a magical world. What book can take me there?",
-        "Give me a book with a strong, kick-butt female lead.",
-        "What's a book that will make me stay up all night because I can't put it down?",
-        "Recommend a book where the villain is just as interesting as the hero.",
-        "I need a book that will make me cry happy tears.",
-        "What's a book with a love story that feels real and not cliché?",
-        "I want a book that will make me think deeply about life and my place in it.",
-        "Give me a book where animals play a significant role in the story.",
-        "What's a book with a unique setting that feels like a character itself?",
-        "Recommend a book that's perfect for a rainy day.",
-        "I need a book with a mystery that I can try to solve along with the characters.",
-        "What's a book that has an epic adventure and a journey worth taking?",
-        "Discuss the dark aspects of Paradise Lost and regained",
-        "What are the rebellion themes in Prometheus Unbound",
-        "What does the stanza \"His dark materials to create more worlds\" mean?",
-        "Explain Samuel Beckett's Waiting for Godot",
-        "I need a novel similar to Sophie's world"
+        "Suggest a comforting book for relaxation.",
+        "Recommend a book guaranteed to make me laugh.",
+        "I want a book with an unexpected plot twist.",
+        "Take me to a magical world with a book.",
+        "Give me a book with a strong female protagonist.",
+        "I need a book so good, I can't put it down.",
+        "Recommend a book with a fascinating villain.",
+        "I want a book to make me cry happy tears.",
+        "Suggest a book with a realistic love story.",
+        "I need a book to make me think deeply about life.",
+        "Give me a book featuring animals as key characters.",
+        "I want a book with a unique, characterful setting.",
+        "Recommend a perfect book for a rainy day.",
+        "I need a book with a mystery to solve.",
+        "Suggest a book with an epic adventure journey.",
+        "Discuss the darkness in Paradise Lost.",
+        "What are the rebellion themes in Prometheus Unbound?",
+        "Explain \"His dark materials to create more worlds.\"",
+        "Explain Samuel Beckett's Waiting for Godot.",
+        "Recommend a novel similar to Sophie's World."
     ], []);
 
 

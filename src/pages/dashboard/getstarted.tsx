@@ -31,10 +31,13 @@ const GetStarted = (props: any) => {
     if (!custom?.gender) dispatch({ type: "gender", gender: "-" });
   }, [custom]);
 
-  useEffect(() => {
-    if (User?.UserInfo?.userIsCustomised) navigator.replace("/dashboard");
-  }, [User?.UserInfo?.userIsCustomised, navigator]);
+  // useEffect(() => {
+  //   if (User?.UserInfo?.userIsCustomised) navigator.replace("/dashboard");
+  // }, [User?.UserInfo?.userIsCustomised, navigator]);
 
+ useEffect(() => {
+    if (!navigator.query.config) navigator.replace("/dashboard");
+  }, [User?.UserInfo?.userIsCustomised, navigator]);
   return (
     <div
       className={`mt-5 p-2 ${validation ? "select-none blur-sm" : ""}`}
@@ -173,7 +176,10 @@ const CustomizationUI = (props: CustomizationUIProps) => {
   const [isLoading, setLoading] = useState(true);
   const userContext = useUserInformation();
   const navigator = useRouter();
-  const {force} = navigator.query
+  const {force, config} = navigator.query
+  useEffect(() => {
+    if (!config) navigator.replace("/dashboard");
+  }, [config, navigator]);
   useEffect(() => {
     if (userContext?.UserInfo?.userIsCustomised && !force) {
       navigator.replace("/dashboard");

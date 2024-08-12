@@ -40,9 +40,10 @@ interface UserInformation {
     userIsCustomised: boolean,
     userstorageid: string
     storageUsed?: number,
-    XP?:number,
+    XP?: number,
     Level?: number,
-    AccessableChats?:[]
+    AccessableChats?: [],
+    ReadingLists: { name: string, titles: string[], description?: any }[]
 }
 
 
@@ -73,7 +74,7 @@ const Dateify = (dat: any) => {
 const toJSON = (meta: string) => {
     if (meta.startsWith("[") || meta.startsWith("{"))
         return JSON.parse(jsonrepair(meta))
-    else return [{"type": "Paragraph", "content": "We seem to be facing a technical difficulty please try again later"}]
+    else return [{ "type": "Paragraph", "content": "We seem to be facing a technical difficulty please try again later" }]
 }
 
 export {

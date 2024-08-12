@@ -64,8 +64,8 @@ const ChatListItem = (props: ChatListItemProps) => {
                   chats?.setChats((prev) =>
                     prev?.filter((value) => value.id !== props.chat.chat_id && value.name !==  props.chat.name)
                   );
-                  updateUsrInformation(acc_info?.uid!, {
-                    "AccessableChats": chats?.chats!.filter(value => value.id !== props.chat.chat_id)
+                  await updateUsrInformation(acc_info?.uid!, {
+                    "AccessableChats": chats?.chats!.filter(value => value.id !== props.chat.chat_id).map(v => v.id)
                   })
                   clearObjectLocalStorage()
                   setDeletionState(true)
@@ -73,7 +73,12 @@ const ChatListItem = (props: ChatListItemProps) => {
                       router.replace("/dashboard")
                 } catch(e) {
                   console.log(e)
-                  
+                  await updateUsrInformation(acc_info?.uid!, {
+                    "AccessableChats": chats?.chats!.filter(value => value.id !== props.chat.chat_id).map(v => v.id)
+                  })
+                  if (router.query.chat_id == props.chat.chat_id)
+                    router.replace("/dashboard")
+                  clearObjectLocalStorage()
                 }
                },
               {
@@ -128,7 +133,7 @@ const ChatList = (props: ChatListProps) => {
     }
   }, [usrdata?.UserInfo?.AccessableChats]);
   if (!chats?.chats?.length && hasDoneRequest)
-    return <p className="opacity-50 ml-2">You have no chats</p>
+    return <p className="opacity-50 ml-2 indent-5">You have no chats</p>
   return (
     <ul>
       

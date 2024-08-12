@@ -1,4 +1,4 @@
-import {GradientHeadingCold} from "@/components/Widgets/GradientHeading";
+import {GradientHeadingBase, GradientHeadingCold} from "@/components/Widgets/GradientHeading";
 import AlphaCardTagAtom from "../atoms/AlphaCardTag";
 
 interface AlphaCardProps {
@@ -13,8 +13,8 @@ const AlphaCard = (props: AlphaCardProps) => {
 		<>
 		    
 			<AlphaCardTagAtom background={props.iconBg} content={props.icon}/>
-			<GradientHeadingCold className={"flex w-fit text-2xl"}>{props.headingText}</GradientHeadingCold>
-			<div className="mt-2 p-5 encode-sans-expanded-regular clip-overflow w-full text-lg">
+			<GradientHeadingBase className={`from-blue-500 to-blue-600 via-blue-400 text-2xl sm:text-4xl`}>{props.headingText}</GradientHeadingBase>
+			<div className="mt-2 p-5 encode-sans-expanded-regular clip-overflow w-full text-md sm:text-lg">
                 {props.children}
 			</div>
 		</>

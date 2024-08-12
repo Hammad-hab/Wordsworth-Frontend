@@ -14,7 +14,7 @@ interface AccountFormsProps {
 
 const AccountForms = (props: AccountFormsProps) => {
   return (
-  <div className={"flex flex-row w-screen h-screen bg-image-account " + props.className}>      
+  <div className={"flex flex-row w-full h-screen xl:h-full bg-image-account " + props.className}>      
 		<LoadingScreen isLoading={props.isLoading}/>
 
 		<div className={`h-screen backdrop-blur-lg left-0 p-10 account_sidebar ${props.classNameSidebar ? props.classNameSidebar : "account_sidebar_h"}`} style={{backgroundColor: "rgba(0,0,0, 0.75)"}}>
@@ -35,8 +35,8 @@ const AccountForms = (props: AccountFormsProps) => {
 		</div>
 
 		<div className="flex-grow h-full bg-right flex flex-col items-center justify-center select-none accounts_text">
-				<GradientHeading id="wordsworth">WordsWorth</GradientHeading>
-				<GradientHeading className="text-xl">Words worth your time</GradientHeading>
+				{/* <GradientHeading id="wordsworth">WordsWorth</GradientHeading>
+				<GradientHeading className="text-xl">Words worth your time</GradientHeading> */}
 		</div>
 	</div>
   );

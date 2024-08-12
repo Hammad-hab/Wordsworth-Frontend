@@ -50,6 +50,12 @@
   }
 }
 
+@media (max-width: 757px) {
+  #light {
+    display: none;
+  }
+}
+
 @media (max-width: 680px) {
   .sidebar {
     width: 60% !important;
