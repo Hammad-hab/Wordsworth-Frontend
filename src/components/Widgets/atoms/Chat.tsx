@@ -6,6 +6,7 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useEffect, useRef, useState } from "react";
 import { MdReadMore } from "react-icons/md";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
 interface ChatBoxProps {
   sender?: string;
@@ -107,6 +108,7 @@ const ChatBox = (props: ChatBoxProps) => {
               }}
             >
               {props.message}
+             
             </Markdown>
           </div>
         ) : (

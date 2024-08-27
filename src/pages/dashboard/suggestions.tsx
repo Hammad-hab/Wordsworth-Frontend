@@ -209,15 +209,9 @@ const SuggestionChat = (props: SuggestionChatProps) => {
           }),
         });
         const ai_response = (await ai_question.json())
-        // console.log(ai_response)
         const hist = ai_response["history"]
         
-        // setResponses(prev => {
-        //   prev[prev.length - 1].message = ai_response
-        //   prev[prev.length - 1].wait = false
-        //   return prev
-        // })
-  
+       try {
         setResponses((prevResponses) => {
           const newResponses = [...prevResponses];
           newResponses[newResponses.length - 1] = {
@@ -228,6 +222,18 @@ const SuggestionChat = (props: SuggestionChatProps) => {
           };
           return newResponses;
         });
+       } catch {
+        setResponses((prevResponses) => {
+          const newResponses = [...prevResponses];
+          newResponses[newResponses.length - 1] = {
+            ...newResponses[newResponses.length - 1],
+            message: "It seems that there is a problem with your internet connection, kindly reconnect and reload.",
+            history: ["I've fixed the error"],
+            wait: false,
+          };
+          return newResponses;
+        });
+       }
       } catch (e) {
         setResponses((prevResponses) => {
           const newResponses = [...prevResponses];

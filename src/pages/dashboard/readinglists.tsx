@@ -23,21 +23,27 @@ import { ButtonBorderBlue } from "@/components/Widgets/atoms/StandardBorderButto
 
 interface ReadingListManagerProps {}
 const ReadingListManager = (props: ReadingListManagerProps) => {
-  // const readingLists = [
-  //     { name: "Summer List", titles: ["Murder at the express", "Das Kapital", "End"] },
-  //     { name: "Classic Literature", titles: ["Pride and Prejudice", "War and Peace", "Moby Dick"] },
-  //     { name: "Mystery and Thriller", titles: ["Gone Girl", "The Silent Patient", "Vertigo"] },
-  //     { name: "Science Fiction", titles: ["Dune", "Neuromancer", "The Hitchhiker's Guide to the Galaxy"] },
-  //     { name: "Non-Fiction", titles: ["Sapiens", "Thinking, Fast and Slow", "Quiet"] },
-  //     { name: "Short Stories", titles: ["The Tell-Tale Heart", "The Lottery", "Hills Like White Elephants"] },
-  //     { name: "Children's Books", titles: ["The Very Hungry Caterpillar", "The Giving Tree", "Where the Wild Things Are"] }
-  //   ];
   const [readingLists, setReadingLists] = useState<any>([]);
   const [newReadingList, setReadingName] = useState<string>("New List");
   const [newReadingBook, setBookName] = useState<string>("Sherlock Holmes");
   const [newReadingListDesc, setReadingDesc] = useState<string>(
     "No Description"
   );
+  const createReadingList = () => {
+    userInfo?.UserInfo?.ReadingLists.push({
+      name: newReadingList,
+      titles: [],
+      description: newReadingListDesc,
+    });
+    updateUsrInformation(userAccount?.uid!, {
+      ReadingLists: userInfo?.UserInfo?.ReadingLists,
+    });
+    userInfo?.setUserInfo(userInfo.UserInfo);
+    setReadingLists([...userInfo?.UserInfo?.ReadingLists!]);
+    clearObjectLocalStorage();
+    setShowCreate(false);
+    setReadingName("New List");
+  }
   const [showCreate, setShowCreate] = useState<boolean>(false);
   const [showInsert, setShowInsert] = useState<any[]>([false, -1]);
   const userInfo = useUserInformation();
@@ -56,14 +62,15 @@ const ReadingListManager = (props: ReadingListManagerProps) => {
               You have no reading lists. <em className="text-blue-500 hover:text-blue-400 hover:underline cursor-pointer" onClick={() => setShowCreate(true)}>Create</em> one
             </span>
           ) : (
-            <div className="p-10 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 h-full sm:h-1/2 w-full">
+            <div className="p-5  grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 h-full sm:h-1/2 w-full">
               {readingLists.map((value: any, k: number) => (
                 <ReadingList
                   key={k}
+                  index={k}
                   name={value.name}
                   titles={value.titles}
                   description={value.description}
-                  onAdd={() => setShowInsert([true, k])}
+                  onAdd={(reloader) => setShowInsert([reloader, k])}
                   onDel={async () => {
                     await updateUsrInformation(userAccount?.uid!, {
                       ReadingLists: userInfo?.UserInfo?.ReadingLists.filter(
@@ -100,7 +107,7 @@ const ReadingListManager = (props: ReadingListManagerProps) => {
             </div>
 
             <p
-              className="hover:bg-gray-200 text-gray-400 hover:text-gray-500 cursor-pointer p-1 transition-all"
+              className="hover:bg-gray-200 text-gray-400 hover:text-gray-500 cursor-pointer p-2 transition-all"
               onClick={() => {
                 userInfo?.UserInfo?.ReadingLists[showInsert[1]].titles.push(
                   newReadingBook
@@ -109,6 +116,8 @@ const ReadingListManager = (props: ReadingListManagerProps) => {
                 userInfo?.setUserInfo(userInfo.UserInfo);
 
                 setShowInsert([false, -1]);
+                if (typeof showInsert[0] !== "boolean")
+                    showInsert[0]()
                 setReadingName("Sherlock Holmes");
                 clearObjectLocalStorage();
               }}
@@ -116,7 +125,7 @@ const ReadingListManager = (props: ReadingListManagerProps) => {
               Add Book
             </p>
             <p
-              className="hover:bg-red-600 text-gray-400 hover:text-white cursor-pointer rounded-b-md p-1 transition-all bg-white"
+              className="hover:bg-red-600 text-gray-400 hover:text-white cursor-pointer rounded-b-md p-2 transition-all bg-white"
               onClick={() => setShowInsert([false, -1])}
             >
               Cancel
@@ -147,31 +156,24 @@ const ReadingListManager = (props: ReadingListManagerProps) => {
                 placeholder=""
                 value={newReadingListDesc}
                 className="border border-black rounded-md px-4 py-2"
-                onChange={(e) => setReadingDesc(e.target.value)}
+                onKeyUp={(e) => {
+                  if (e.key === 'Enter' || e.keyCode === 1) {
+                    createReadingList()
+                  }
+                }}
+                onChange={(e) => {
+                  setReadingDesc(e.target.value)
+                }}
               />
             </div>
             <p
-              className="hover:bg-gray-200 text-gray-400 hover:text-gray-500 cursor-pointer p-4 transition-all"
-              onClick={() => {
-                console.log("Should Work");
-                userInfo?.UserInfo?.ReadingLists.push({
-                  name: newReadingList,
-                  titles: [],
-                  description: newReadingListDesc,
-                });
-                updateUsrInformation(userAccount?.uid!, {
-                  ReadingLists: userInfo?.UserInfo?.ReadingLists,
-                });
-                userInfo?.setUserInfo(userInfo.UserInfo);
-                setShowCreate(false);
-                setReadingName("New List");
-                clearObjectLocalStorage();
-              }}
+              className="hover:bg-gray-200 text-gray-400 hover:text-gray-500 cursor-pointer p-2 transition-all"
+              onClick={createReadingList}
             >
               Create
             </p>
             <p
-              className="hover:bg-red-600 text-gray-400 hover:text-white cursor-pointer rounded-b-md p-4 transition-all bg-white"
+              className="hover:bg-red-600 text-gray-400 hover:text-white cursor-pointer rounded-b-md p-2 transition-all bg-white"
               onClick={() => setShowCreate(false)}
             >
               Cancel

@@ -23,6 +23,10 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "i.gr-assets.com"
+      },
+      {
+        protocol: "https",
+        hostname: "www.drupal.org"
       }
 
     ],

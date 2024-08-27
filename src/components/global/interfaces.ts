@@ -42,7 +42,7 @@ interface UserInformation {
     storageUsed?: number,
     XP?: number,
     Level?: number,
-    AccessableChats?: [],
+    AccessableChats?: any[],
     ReadingLists: { name: string, titles: string[], description?: any }[]
 }
 

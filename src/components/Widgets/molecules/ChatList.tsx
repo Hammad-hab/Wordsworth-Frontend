@@ -11,7 +11,7 @@ import Dropdown from "./Dropdown";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/router";
 import { clearObjectLocalStorage } from "@/components/global/superglobal_utils";
-import { updateUsrInformation } from "@/components/global/firestore";
+import { setUsrInformation, updateUsrInformation } from "@/components/global/firestore";
 
 interface ChatListProps {}
 interface ChatListItemProps {
@@ -73,12 +73,16 @@ const ChatListItem = (props: ChatListItemProps) => {
                       router.replace("/dashboard")
                 } catch(e) {
                   console.log(e)
-                  await updateUsrInformation(acc_info?.uid!, {
-                    "AccessableChats": chats?.chats!.filter(value => value.id !== props.chat.chat_id).map(v => v.id)
-                  })
+                  if (acc?.UserInfo?.AccessableChats) {
+                    acc.UserInfo.AccessableChats = chats?.chats?.filter((value:any) => value.id !== props.chat.chat_id).map((v:any) => v.id)
+                    acc.setUserInfo(acc.UserInfo)
+                    await setUsrInformation(acc_info?.uid!, acc.UserInfo)
+                    clearObjectLocalStorage()
+                  } else {
+                    toast.error("ERROR, Core-Level FAILURE, please report this.")
+                  }
                   if (router.query.chat_id == props.chat.chat_id)
                     router.replace("/dashboard")
-                  clearObjectLocalStorage()
                 }
                },
               {
