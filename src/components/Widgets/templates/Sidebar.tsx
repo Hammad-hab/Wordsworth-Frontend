@@ -63,7 +63,6 @@ const DashboardSidebar = (props: DashboardSidebarProps) => {
   const [storage, setStorage] = useState(usrdata?.UserInfo?.storageUsed!);
   const level = useUserDidLevelUp();
   const [showLevelUpDialog, setShowLevelUpDialog] = useState(level?.didLevelUp);
-
   useEffect(() => {
     setShowLevelUpDialog(level?.didLevelUp);
   }, [level?.didLevelUp]);
@@ -232,9 +231,9 @@ const DashboardSidebar = (props: DashboardSidebarProps) => {
                 })}
               />
             </div>
-            {usrdata?.UserInfo?.profilePicture ? (
+            {usraccount?.photoURL ? (
               <Image
-                src={usrdata?.UserInfo?.profilePicture}
+                src={usraccount?.photoURL}
                 alt="Profile Picture"
                 width={64}
                 height={64}
