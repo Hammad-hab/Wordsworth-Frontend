@@ -15,68 +15,24 @@ import Light from "@/components/Widgets/Light";
 import { IoMdSend } from "react-icons/io";
 import { useUserDidLevelUp } from "@/components/hooks/contexts/userDidLevelup";
 import { useRouter } from "next/router";
-import { jsonrepair } from 'jsonrepair'
+import { jsonrepair } from "jsonrepair";
 import {
   getUsrInformation,
   updateUsrInformation,
 } from "@/components/global/firestore";
-import { clearObjectLocalStorage, setObjectLocalStorage } from "@/components/global/superglobal_utils";
+import {
+  clearObjectLocalStorage,
+  setObjectLocalStorage,
+} from "@/components/global/superglobal_utils";
 import Overlay from "@/components/Widgets/atoms/Overlay";
 import { toast } from "react-toastify";
 import { useChatContext } from "@/components/global/useChatContext";
 import { arrayUnion } from "firebase/firestore";
+import SuggestionInputBox from "@/components/Widgets/atoms/SuggestionInputBox";
+import WordsWorthLogo from "@/components/Widgets/atoms/WordsworthLogo";
+import QuestionExample from "@/components/Widgets/molecules/QuestionExample";
 
 interface SuggestionChatProps {}
-const Input = (props: {
-  requestHandler: (prompt: string, callback?:any) => void;
-  disabled: boolean;
-}) => {
-  const [userQuery, setUserQuery] = useState("");
-  const inputRef = useRef<any>(null)
-  return (
-    <div className="w-full flex flex-row border border-[#dddde0] rounded-md">
-      {/* border border-[#dddde0] */}
-      <textarea
-        ref={inputRef}
-        autoFocus
-        
-        className={`w-full p-2 mt-1 pl-4 pr-4 outline-none rounded-md h-[45px] dm-sans resize-none ${
-          props.disabled ? "cursor-not-allowed" : ""
-        } placeholder:text-md`}
-        placeholder="Type message"
-        value={userQuery}
-        contentEditable={props.disabled}
-        onChange={(e) =>
-          !props.disabled
-            ? setUserQuery(e.target.value)
-            : e.currentTarget.blur()
-        }
-        onFocus={(e) => (props.disabled ? e.currentTarget.blur() : "")}
-        onKeyDown={(e) => {
-          if (
-            e.key === "Enter" &&
-            userQuery.trim().length > 0 &&
-            !props.disabled
-          ) {
-            e.preventDefault();
-            const nil = props.requestHandler(userQuery);
-            setUserQuery("");
-            e.currentTarget.blur();
-          }
-        }}
-      />
-      <IoMdSend
-        className={`text-5xl p-3 rounded-md  transition-all rounded-l-none ${
-          !userQuery ? "bg-cyan-600" : "bg-cyan-500 hover:bg-cyan-600"
-        }`}
-        onClick={() => {
-          props.requestHandler(userQuery, ()=> inputRef.current.focus());
-          setUserQuery("");
-        }}
-      />
-    </div>
-  );
-};
 
 const SuggestionChat = (props: SuggestionChatProps) => {
   const [playSound] = useSound("/Sfx/chat_pop.wav", {
@@ -87,7 +43,7 @@ const SuggestionChat = (props: SuggestionChatProps) => {
     {
       role: string;
       message: string | { type: string; content: string };
-      history?: any
+      history?: any;
       wait?: boolean;
     }[]
   >([]);
@@ -96,20 +52,19 @@ const SuggestionChat = (props: SuggestionChatProps) => {
   const displayArea = useRef<HTMLDivElement | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const randomPrompts = useRandomPrompts();
-  const [hasLoadedConversation, setHasLoadedConversation] = useState(false);
-  const chats = useChatContext()
+  const chats = useChatContext();
   const [
     loadingPreloadConversation,
     setIsLoadingPreloadConversation,
   ] = useState(false);
   const { chat_id } = useRouter().query;
-  const user_chatting_id = useRef(chat_id)
+  const user_chatting_id = useRef(chat_id);
   const router = useRouter();
 
   useEffect(() => {
-    if (!chat_id) return
-    user_chatting_id.current = chat_id
-  }, [chat_id])
+    if (!chat_id) return;
+    user_chatting_id.current = chat_id;
+  }, [chat_id]);
 
   useEffect(() => {
     if (!chat_id) return;
@@ -121,13 +76,16 @@ const SuggestionChat = (props: SuggestionChatProps) => {
 
     (async () => {
       try {
-        const req = await fetch("https://words-worth-backend.vercel.app/load_chat", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: BODY,
-        });
+        const req = await fetch(
+          "https://words-worth-backend.vercel.app/load_chat",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: BODY,
+          }
+        );
         const history = (await req.json())["chat_id"];
         console.log(history);
         const valid_hist: any = [];
@@ -144,102 +102,110 @@ const SuggestionChat = (props: SuggestionChatProps) => {
         setIsLoadingPreloadConversation(false);
       } catch (e) {
         toast.error("Chat not found!");
-        
+
         await updateUsrInformation(UserAccount?.uid!, {
-          "AccessableChats": chats?.chats!.filter(value => value.id !== chat_id).map(v => v.id)
-        })
-        chats?.setChats(chats?.chats!.filter(value => value.id !== chat_id))
-        clearObjectLocalStorage()
+          AccessableChats: chats
+            ?.chats!.filter((value) => value.id !== chat_id)
+            .map((v) => v.id),
+        });
+        chats?.setChats(chats?.chats!.filter((value) => value.id !== chat_id));
+        clearObjectLocalStorage();
         router.replace("/dashboard");
       }
     })();
   }, [chat_id, UsrData?.UserInfo?.userstorageid]);
 
-  // }
-  const handleRequest = (prompt: string, callback?:any) => {
-   (async () => {
+  const handleRequest = (prompt: string, callback?: any) => {
+    (async () => {
       if (!UserAccount?.uid) return;
 
-      
       setResponses((prevResponses) => {
-       const newResponses = [...prevResponses]
-       if (newResponses.length > 0)
-          newResponses[newResponses.length - 1].history = 0
-       return [
+        const newResponses = [...prevResponses];
+        if (newResponses.length > 0)
+          newResponses[newResponses.length - 1].history = 0;
+        return [
           ...newResponses,
           { role: "User", message: prompt },
           { role: "Wordsworth", message: "", wait: true },
-        ]
+        ];
       });
 
-      if (!user_chatting_id.current && !chat_id)
-      {
-        const create_req = await fetch("https://words-worth-backend.vercel.app/create_chat", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            usrstorageid: UsrData?.UserInfo?.userstorageid,
-            chat_name: prompt,
-          }),
-        });
-        const chat_identifier = (await create_req.json())["chat_id"]
-        user_chatting_id.current = chat_identifier
+      if (!user_chatting_id.current && !chat_id) {
+        const create_req = await fetch(
+          "https://words-worth-backend.vercel.app/create_chat",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              usrstorageid: UsrData?.UserInfo?.userstorageid,
+              chat_name: prompt,
+            }),
+          }
+        );
+        const chat_identifier = (await create_req.json())["chat_id"];
+        user_chatting_id.current = chat_identifier;
         updateUsrInformation(UserAccount.uid, {
-            "AccessableChats": arrayUnion(chat_identifier)
-        })
-        clearObjectLocalStorage()
-        chats?.setChats(prev => prev ? [
-          ...prev,
-          {name: prompt, id: chat_identifier, isCustom: true}
-        ] : prev)
+          AccessableChats: arrayUnion(chat_identifier),
+        });
+        clearObjectLocalStorage();
+        chats?.setChats((prev) =>
+          prev
+            ? [...prev, { name: prompt, id: chat_identifier, isCustom: true }]
+            : prev
+        );
       }
 
       try {
-        const ai_question = await fetch("https://words-worth-backend.vercel.app/query", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            usrstorageid: UsrData?.UserInfo?.userstorageid,
-            chat_id: user_chatting_id.current,
-            question: prompt
-          }),
-        });
-        const ai_response = (await ai_question.json())
-        const hist = ai_response["history"]
-        
-       try {
-        setResponses((prevResponses) => {
-          const newResponses = [...prevResponses];
-          newResponses[newResponses.length - 1] = {
-            ...newResponses[newResponses.length - 1],
-            message: ai_response["response"],
-            history: JSON.parse(jsonrepair(hist)),
-            wait: false,
-          };
-          return newResponses;
-        });
-       } catch {
-        setResponses((prevResponses) => {
-          const newResponses = [...prevResponses];
-          newResponses[newResponses.length - 1] = {
-            ...newResponses[newResponses.length - 1],
-            message: "It seems that there is a problem with your internet connection, kindly reconnect and reload.",
-            history: ["I've fixed the error"],
-            wait: false,
-          };
-          return newResponses;
-        });
-       }
+        const ai_question = await fetch(
+          "https://words-worth-backend.vercel.app/query",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              usrstorageid: UsrData?.UserInfo?.userstorageid,
+              chat_id: user_chatting_id.current,
+              question: prompt,
+            }),
+          }
+        );
+        const ai_response = await ai_question.json();
+        const hist = ai_response["history"];
+
+        try {
+          setResponses((prevResponses) => {
+            const newResponses = [...prevResponses];
+            newResponses[newResponses.length - 1] = {
+              ...newResponses[newResponses.length - 1],
+              message: ai_response["response"],
+              history: JSON.parse(jsonrepair(hist)),
+              wait: false,
+            };
+            return newResponses;
+          });
+        } catch {
+          setResponses((prevResponses) => {
+            const newResponses = [...prevResponses];
+            newResponses[newResponses.length - 1] = {
+              ...newResponses[newResponses.length - 1],
+              message:
+                "It seems that there is a problem with your internet connection, kindly reconnect and reload.",
+              history: ["I've fixed the error"],
+              wait: false,
+            };
+            return newResponses;
+          });
+        }
       } catch (e) {
         setResponses((prevResponses) => {
           const newResponses = [...prevResponses];
           newResponses[newResponses.length - 1] = {
             ...newResponses[newResponses.length - 1],
-            message: "It seems that there is a problem with your internet connection, kindly reconnect and reload.",
+            message:
+              "It seems that there is a problem with your internet connection, kindly reconnect and reload.",
             history: ["I've fixed the error"],
             wait: false,
           };
@@ -247,18 +213,15 @@ const SuggestionChat = (props: SuggestionChatProps) => {
         });
       }
 
-
-      
-      console.log(responses)
-      if (typeof callback == "function") callback()
-    })()
+      console.log(responses);
+      if (typeof callback == "function") callback();
+    })();
   };
-  // const handleRequest = (...props) => props;
   if (!loadingPreloadConversation)
     return (
-      <DashboardSidebar className="p-2 unov-white pb-0">
+      <DashboardSidebar className="p-2 pb-0">
         <div
-          className={`flex flex-col p-10 overflow-auto bg-white h-full w-full fadedScroll rounded-md`}
+          className={`flex flex-col p-10 overflow-auto bg-zinc-800 h-full w-full fadedScroll rounded-md rounded-b-none`}
           ref={displayArea}
         >
           {responses.length > 0 ? (
@@ -289,13 +252,7 @@ const SuggestionChat = (props: SuggestionChatProps) => {
             ))
           ) : (
             <div>
-              <Image
-                src="/Images/logo.jpeg"
-                width={250}
-                height={250}
-                alt="Wordsworth"
-                className="rounded-full block m-auto"
-              />
+              <WordsWorthLogo width={250} height={250} />
               <GradientHeading className="text-4xl from-orange-500 to-pink-500 from-20% to-80% via-amber-500 via-30% transition-all">
                 Hi, I{"'"}m Wordsworth
               </GradientHeading>
@@ -306,32 +263,28 @@ const SuggestionChat = (props: SuggestionChatProps) => {
               </div>
               <div className="w-full flex flex-col gap-5 justify-center md:flex-col lg:flex-row xl:flex-row">
                 {randomPrompts.map((value, key) => (
-                  <div
-                    className="mt-2 bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-600 p-[2px] rounded-md"
-                    key={key}
+                  <QuestionExample
                     onClick={() => handleRequest(value)}
-                  >
-                    <div
-                      className={`bg-gray-400 p-5 rounded-sm shadow-md hover:opacity-80 transition-all card cursor-pointer h-full`}
-                    >
-                      {/* <Light color=""/> */}
-                      {value}
-                    </div>
-                  </div>
+                    label={value}
+                    key={key}
+                  />
                 ))}
               </div>
             </div>
           )}
         </div>
-        <div className="p-2 w-full bg-white rounded-b-md flex flex-row gap-1 shadow-lg">
-          <Input requestHandler={handleRequest} disabled={isGenerating} />
+        <div className="p-2 w-full bg-zinc-700 rounded-b-md flex flex-row gap-1 shadow-lg">
+          <SuggestionInputBox
+            requestHandler={handleRequest}
+            disabled={isGenerating}
+          />
         </div>
       </DashboardSidebar>
     );
   else
     return (
       <DashboardSidebar>
-        <ReactLoading type="bubbles" color="black" />
+        <ReactLoading type="bubbles" color="white" />
         <p>Loading your previous conversation...</p>
       </DashboardSidebar>
     );

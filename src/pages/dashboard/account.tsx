@@ -213,12 +213,11 @@ const AccountInformation = (props: any) => {
             User Information
           </legend>
 
-          <small className="text-gray-400 ml-2 mb-3">Change User Name</small>
           <InputBox
             tag="Change name"
             autoClickDisable={true}
             className="border border-r-0"
-            containerClassName="mb-0"
+            containerClassName="mb-2"
             minLength={6}
             maxLength={20}
             theme="Light"
@@ -234,25 +233,6 @@ const AccountInformation = (props: any) => {
             }}
           />
 
-          <small className="text-gray-400 ml-2 mb-3 mt-2">Change Email</small>
-          <InputBox
-            tag="Change email"
-            autoClickDisable={true}
-            className="border border-r-0"
-            minLength={6}
-            maxLength={20}
-            theme="Light"
-            onChange={(e) => setNEmail(e.target.value)}
-            value={nemail}
-            placeHolder="New Email"
-            onTagClicked={(e) => {
-              toast.promise(handleEmailChange, {
-                success: "Successfully Altered your username",
-                error: "Oh no, it seems we failed. Please try again",
-                pending: "Please wait...",
-              });
-            }}
-          />
         </fieldset>
 
         <fieldset className="border-2 border-red-500 p-3 mt-3 mr-5 ml-5">

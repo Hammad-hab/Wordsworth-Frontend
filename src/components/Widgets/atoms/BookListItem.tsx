@@ -17,38 +17,61 @@ const BookListItem = (props: BookListItemProps) => {
   return (
     <li
       ref={self}
-      className="p-2 bg-gray-200 m-2 flex flex-row items-center gap-2 rounded-sm hover:bg-gray-300 transition-all"
+      className={`p-2 bg-zinc-200 m-2 flex flex-row items-center gap-2 rounded-sm border-2 border-zinc-200 hover:border-zinc-400 transition-all`}
       onClick={() => setShowMore(true)}
     >
       {props.bookTitlePageURL ? (
-        <Image
-          src={props.bookTitlePageURL}
-          width={50}
-          height={50}
-          alt={props.bookTitle}
-        />
-      ) : (
-        <div className="skel_animation w-[50px] h-[50px]"></div>
-      )}
+        <>
+          <Image
+            src={props.bookTitlePageURL}
+            width={50}
+            height={50}
+            alt={props.bookTitle}
+          />
 
-      <p className="w-full pr-10">{props.bookTitle}</p>
-      <p
-        className="text-gray-400 hover:text-red-500 cursor-pointer transition-all"
-        onClick={() => {
-          toast.promise(props.onDelBook(props.bookTitle), {
-            success: `Successfully removed ${props.bookTitle}`,
-            pending: `Removing book ${props.bookTitle} from reading list`,
-            error: "Failed to remove book from reading list, please try again",
-          });
-          if (self.current instanceof HTMLLIElement) {
-            self.current.setAttribute("style", "display: none;");
-          }
-          clearObjectLocalStorage();
-        }}
-      >
-        <MdOutlineRemoveCircleOutline className="inline ml-2" />
-      </p>
-{/* 
+          <p className="w-full pr-10">{props.bookTitle}</p>
+          <p
+            className="text-gray-400 hover:text-red-500 cursor-pointer transition-all"
+            onClick={() => {
+              toast.promise(props.onDelBook(props.bookTitle), {
+                success: `Successfully removed ${props.bookTitle}`,
+                pending: `Removing book ${props.bookTitle} from reading list`,
+                error:
+                  "Failed to remove book from reading list, please try again",
+              });
+              if (self.current instanceof HTMLLIElement) {
+                self.current.setAttribute("style", "display: none;");
+              }
+              clearObjectLocalStorage();
+            }}
+          >
+            <MdOutlineRemoveCircleOutline className="inline ml-2" />
+          </p>
+        </>
+      ) : (
+        <>
+          <div className="skel_animation w-[50px] h-[50px]"></div>
+          <small className="w-full p-0.5 pr-10 rounded-md">Loading title...</small>
+          <p
+            className="text-gray-400 hover:text-red-500 cursor-pointer transition-all"
+            onClick={() => {
+              toast.promise(props.onDelBook(props.bookTitle), {
+                success: `Successfully removed ${props.bookTitle}`,
+                pending: `Removing book ${props.bookTitle} from reading list`,
+                error:
+                  "Failed to remove book from reading list, please try again",
+              });
+              if (self.current instanceof HTMLLIElement) {
+                self.current.setAttribute("style", "display: none;");
+              }
+              clearObjectLocalStorage();
+            }}
+          >
+            <MdOutlineRemoveCircleOutline className="inline ml-2" />
+          </p>
+        </>
+      )}
+      {/* 
       <Modal
         title={"About Book"}
         subtitle={props.bookTitle}

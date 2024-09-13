@@ -19,8 +19,8 @@ const GridFileItem = (props: GridFileItemProps) => {
   }, [isSelected, inputRef]);
   return (
     <div
-      className={`rounded-md p-5 flex flex-col border-2 border-zinc-200 select-none ${
-        isSelected ? "bg-blue-200 border-dashed border-zinc-300" : ""
+      className={`rounded-md p-5 flex flex-col border-2 border-zinc-800 select-none ${
+        isSelected ? "bg-zinc-500 border-dashed border-zinc-800" : ""
       }`}
       onClick={() => {
         setIsSelected(!isSelected);
@@ -68,3 +68,4 @@ const GridFileItem = (props: GridFileItemProps) => {
 };
 
 export default GridFileItem;
+ 

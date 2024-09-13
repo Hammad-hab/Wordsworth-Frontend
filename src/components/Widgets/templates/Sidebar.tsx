@@ -74,7 +74,7 @@ const DashboardSidebar = (props: DashboardSidebarProps) => {
       setStorage(usrdata?.UserInfo?.storageUsed!);
   }, [usrdata?.UserInfo?.storageUsed]);
   return (
-    <div className="h-screen w-full flex flex-row overflow-hidden">
+    <div className="h-screen w-full flex flex-row overflow-hidden bg-[#004e667e]">
       <p className="flex flex-col w-full p-2 sidebarShowButton absolute">
         <IoMdMore
           className="text-xl self-end"
@@ -82,7 +82,7 @@ const DashboardSidebar = (props: DashboardSidebarProps) => {
         />
       </p>
       <Light
-        color="#264A52"
+        color="#6d00ea"
         blurRadius={150}
         className="w-[500px] h-[500px] zindexn50 fixed sidebar_light"
       />
@@ -92,7 +92,7 @@ const DashboardSidebar = (props: DashboardSidebarProps) => {
         className="w-[500px] h-[500px] zindexn50 fixed mt-[250px] sidebar_light"
       />
       <div
-        className={`bg-[#003459c6] w-1/6 h-full flex flex-col text-white border-none sidebar transition-all z-20 ${
+        className={`bg-[#003459b2] w-1/6 h-full flex flex-col text-white border-none sidebar transition-all z-20 ${
           showSideBar ? "" : "hide_slide"
         }`}
       >
@@ -309,7 +309,7 @@ const DashboardSidebar = (props: DashboardSidebarProps) => {
 
       {/* </div> */}
       <div
-        className={`w-full p-2 flex flex-col items-center justify-center bg-zinc-200 overflow-y-auto ${props.className}`}
+        className={`w-full p-2 flex flex-col items-center justify-center bg-zinc-900 text-white overflow-y-auto ${props.className}`}
         onClick={() => setShowSidebar(false)}
       >
         {props.children}

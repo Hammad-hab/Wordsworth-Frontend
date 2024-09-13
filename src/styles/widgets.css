@@ -104,7 +104,7 @@ header {
 }
 
 .skel_animation {
-  animation: skeleton 0.5s linear infinite alternate;
+  animation: skeleton 0.75s linear infinite alternate;
 }
 
 @keyframes skeleton {
@@ -112,7 +112,7 @@ header {
     background-color: rgb(204, 204, 204);
   }
   100% {
-    background-color: rgb(143, 143, 143);
+    background-color: rgb(177, 177, 177);
   }
 }
 

@@ -6,7 +6,7 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useEffect, useRef, useState } from "react";
 import { MdReadMore } from "react-icons/md";
-import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import { AiOutlineArrowRight } from "react-icons/ai"
 
 interface ChatBoxProps {
   sender?: string;
@@ -26,8 +26,8 @@ interface SuggestedQuestionProps {
 const SuggestedQuestion = (props: SuggestedQuestionProps) => {
 
   return (
-    <span className="block m-2 border-b p-2 hover:text-blue-900 transition-all cursor-pointer hover:indent-2" onClick={() => props.onClick()}>
-      {typeof props.q === "string" ? props.q : props.q["question"]}
+    <span className="block m-2 border-b border-zinc-600 p-2 hover:text-blue-300 transition-all cursor-pointer hover:indent-2 text-zinc-400" onClick={() => props.onClick()}>
+      <AiOutlineArrowRight className="inline"/> {typeof props.q === "string" ? props.q : props.q["question"]}
     </span>
   );
 };
@@ -72,7 +72,7 @@ const ChatBox = (props: ChatBoxProps) => {
       </div>
 
       <div
-        className={`m-2 bg-[#eaeaea] p-2 rounded-lg w-fit max-w-[800px] ${
+        className={`m-2 bg-gradient-to-b from-[#6a0275] to-[#4a0252] p-2 rounded-lg w-fit max-w-[800px] ${
           props.direction === "Left"
             ? "rounded-tl-none"
             : props.direction === "Right"
@@ -81,7 +81,7 @@ const ChatBox = (props: ChatBoxProps) => {
         }`}
       >
         {!props.isLoading ? (
-          <div className={`text-md dm-sans text-black`} ref={this_chat}>
+          <div className={`text-md dm-sans text-zinc-300`} ref={this_chat}>
             <Markdown
               remarkPlugins={[remarkGfm]}
               components={{
@@ -90,7 +90,7 @@ const ChatBox = (props: ChatBoxProps) => {
                     <a
                       href={props.href}
                       target="_blank"
-                      className="text-blue-500 hover:underline"
+                      className="text-blue-400 hover:underline"
                     >
                       {props.children}
                     </a>
@@ -117,8 +117,8 @@ const ChatBox = (props: ChatBoxProps) => {
       </div>
       {props.history && showRelated ? (
         <p className="mt-5 ml-2">
-          <h1 className="font-semibold text-2xl"><MdReadMore className="inline-block"/> Related Questions</h1>
-          {props.history.map((question: any, key: number) => (
+          <h1 className="font-semibold text-2xl text-zinc-300"><MdReadMore className="inline-block"/> Related Questions</h1>
+          {props.history.slice(0, 8).map((question: any, key: number) => (
             <SuggestedQuestion q={question} onClick={() => wrappedClickedEvent(question)} key={key}/>
           ))}
         </p>

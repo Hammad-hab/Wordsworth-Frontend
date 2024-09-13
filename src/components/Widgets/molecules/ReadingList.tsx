@@ -73,13 +73,13 @@ const ReadingList = (props: ReadingListProps) => {
   if (!hasBeenDeleted)
     return (
       <>
-        <Card className="h-fit">
+        <Card className="h-fit bg-gray-300">
           <CardHeader>
             <CardTitle>{props.name}</CardTitle>
             <CardDescription>{props?.description}</CardDescription>
           </CardHeader>
           <CardContent className="h-full">
-            {userInfo?.UserInfo?.ReadingLists[props.index].titles && userInfo?.UserInfo?.ReadingLists[props.index].titles.length! > 0
+            {userInfo?.UserInfo?.ReadingLists[props.index]?.titles && userInfo?.UserInfo?.ReadingLists[props.index].titles.length! > 0
               ? props.titles.map((title, k) => <BookListItem key={k} bookTitlePageURL={bookImages[k]} bookTitle={title} onDelBook={onDeleteBook}/>)
               : "No books in this reading list"}
           </CardContent>

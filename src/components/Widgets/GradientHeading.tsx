@@ -26,7 +26,7 @@ const GradientHeadingBase = (props: GradientHeadingProps) => {
 // 
 const GradientHeading = (props: GradientHeadingProps) => {
 	/* Extends <GradientHeading/> Providing a smaller heading with blue gradient */
-	return <GradientHeadingBase className={`to-[#003459] from-[#00A8E8]  ${!props.className ? "text-6xl" : ""} ${props.className}`} id={props.id}>{props.children}</GradientHeadingBase>
+	return <GradientHeadingBase className={`to-[#6d00ea] from-[#00A8E8]  ${!props.className ? "text-6xl" : ""} ${props.className}`} id={props.id}>{props.children}</GradientHeadingBase>
 };
 
 

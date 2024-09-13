@@ -71,6 +71,7 @@ const ChatListItem = (props: ChatListItemProps) => {
                   setDeletionState(true)
                   if (router.query.chat_id == props.chat.chat_id)
                       router.replace("/dashboard")
+                  
                 } catch(e) {
                   console.log(e)
                   if (acc?.UserInfo?.AccessableChats) {
